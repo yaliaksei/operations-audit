@@ -1,8 +1,10 @@
+import base64
 import json
 import os
 import sqlite3
 import uuid
 from datetime import datetime, timezone
+from functools import wraps
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -164,6 +166,46 @@ def generate_pdf():
     except Exception as e:
         app.logger.exception("pdf error")
         return jsonify({"error": str(e)}), 500
+
+
+def require_admin(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        admin_key = os.environ.get("ADMIN_KEY", "")
+        if not admin_key:
+            return "ADMIN_KEY not set in environment", 403
+        auth = request.headers.get("Authorization", "")
+        if auth.startswith("Basic "):
+            try:
+                _, password = base64.b64decode(auth[6:]).decode().split(":", 1)
+                if password == admin_key:
+                    return f(*args, **kwargs)
+            except Exception:
+                pass
+        return Response("Unauthorized", 401, {"WWW-Authenticate": 'Basic realm="Admin"'})
+    return decorated
+
+
+@app.route("/admin")
+@require_admin
+def admin_list():
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute(
+            "SELECT id, email, business_type, process_name, created_at FROM sessions ORDER BY created_at DESC"
+        ).fetchall()
+    return render_template("admin.html", sessions=rows)
+
+
+@app.route("/admin/<session_id>")
+@require_admin
+def admin_detail(session_id):
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        row = conn.execute("SELECT * FROM sessions WHERE id = ?", (session_id,)).fetchone()
+    if row is None:
+        return "Session not found", 404
+    return render_template("admin_session.html", s=row)
 
 
 @app.route("/api/session", methods=["POST"])
