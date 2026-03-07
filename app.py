@@ -60,6 +60,11 @@ def to_gemini_messages(messages: list) -> list:
 
 
 @app.route("/")
+def home():
+    return render_template("landing.html")
+
+
+@app.route("/app")
 def index():
     return render_template("index.html")
 
