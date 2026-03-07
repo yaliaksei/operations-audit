@@ -190,6 +190,21 @@
                     class="block w-full rounded-md border border-gray-300 pl-9 pr-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none" />
                 </div>
               </div>
+
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1.5">
+                  Your email
+                </label>
+                <div class="relative">
+                  <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                    </svg>
+                  </div>
+                  <input id="email" type="email" placeholder="e.g. owner@example.com"
+                    class="block w-full rounded-md border border-gray-300 pl-9 pr-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none" />
+                </div>
+              </div>
             </div>
 
             <div class="mt-6 flex items-center gap-3 flex-wrap">
@@ -418,7 +433,7 @@
 
 <script>
 const state = {
-  phase: 0, businessType: '', weeklyVolume: '', processName: '', channels: '',
+  phase: 0, businessType: '', weeklyVolume: '', processName: '', channels: '', email: '',
   chatHistory: [], transcript: '', extractedSteps: null,
   classifiedSteps: null, verdicts: null, report: ''
 };
@@ -505,6 +520,7 @@ function getContextFromForm() {
   state.weeklyVolume = document.getElementById('weekly-volume').value;
   state.processName = document.getElementById('process-name').value;
   state.channels = document.getElementById('channels').value;
+  state.email = document.getElementById('email').value.trim();
 }
 
 function runFromPaste() {
@@ -1051,6 +1067,7 @@ async function proceedToAnalysis() {
       document.getElementById('final-report').textContent = report;
       document.getElementById('download-btn').style.display = 'inline-flex';
       renderFlowDiagram('diagram-improved', state.diagramImproved, true);
+      await saveSession();
     }, 400);
 
   } catch(e) {
@@ -1060,6 +1077,38 @@ async function proceedToAnalysis() {
     logProc('  (open browser console for details)');
     document.getElementById('proc-text').textContent = 'Error — see log above';
     console.error('Pipeline error:', e);
+  }
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  t.className = 'fixed bottom-4 right-4 bg-gray-900 text-white text-xs font-medium px-3 py-2 rounded-md shadow-lg fade-in z-50';
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+async function saveSession() {
+  try {
+    const diagramAsIs     = document.querySelector('#diagram-as-is svg')?.outerHTML || '';
+    const diagramImproved = document.querySelector('#diagram-improved svg')?.outerHTML || '';
+    const res = await fetch('/api/session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email:            state.email,
+        business_type:    state.businessType,
+        process_name:     state.processName,
+        transcript:       state.transcript,
+        diagram_asis:     diagramAsIs,
+        diagram_improved: diagramImproved,
+        report:           state.report,
+      })
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    showToast('Session saved');
+  } catch(e) {
+    console.warn('Session save failed:', e);
   }
 }
 
@@ -1107,7 +1156,8 @@ async function downloadPDF(event) {
 }
 
 function resetApp() {
-  Object.assign(state, { phase:0, chatHistory:[], transcript:'', extractedSteps:null, classifiedSteps:null, verdicts:null, report:'' });
+  Object.assign(state, { phase:0, email:'', chatHistory:[], transcript:'', extractedSteps:null, classifiedSteps:null, verdicts:null, report:'' });
+  const em = document.getElementById('email'); if (em) em.value = '';
   document.getElementById('chat-area').innerHTML = '';
   document.getElementById('processing-log').textContent = '';
   document.getElementById('progress').style.width = '0%';
