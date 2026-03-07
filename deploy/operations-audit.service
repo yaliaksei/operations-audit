@@ -1,0 +1,19 @@
+[Unit]
+Description=Operations Audit (Fractional COO)
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/srv/operations-audit
+EnvironmentFile=/srv/operations-audit/.env
+ExecStart=/srv/operations-audit/.venv/bin/gunicorn app:app \
+    -w 4 -k gevent --worker-connections 50 \
+    --bind 127.0.0.1:8000 \
+    --access-logfile /var/log/operations-audit/access.log \
+    --error-logfile /var/log/operations-audit/error.log
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

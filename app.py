@@ -1,5 +1,10 @@
+import base64
 import json
 import os
+import sqlite3
+import uuid
+from datetime import datetime, timezone
+from functools import wraps
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -14,6 +19,28 @@ client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
 AGENTS_DIR = Path(__file__).parent / "agents"
 MODEL = "gemini-2.5-flash"
+DB_PATH = Path(__file__).parent / "sessions.db"
+
+
+def init_db():
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS sessions (
+                id               TEXT PRIMARY KEY,
+                email            TEXT,
+                business_type    TEXT,
+                process_name     TEXT,
+                transcript       TEXT,
+                diagram_asis     TEXT,
+                diagram_improved TEXT,
+                report           TEXT,
+                created_at       TEXT
+            )
+        """)
+        conn.commit()
+
+
+init_db()
 
 
 def load_agent(name: str) -> str:
@@ -33,8 +60,23 @@ def to_gemini_messages(messages: list) -> list:
 
 
 @app.route("/")
+def home():
+    return render_template("landing.html")
+
+
+@app.route("/app")
 def index():
     return render_template("index.html")
+
+
+@app.route("/terms")
+def terms():
+    return render_template("terms.html")
+
+
+@app.route("/privacy")
+def privacy():
+    return render_template("privacy.html")
 
 
 @app.route("/api/chat", methods=["POST"])
@@ -138,6 +180,77 @@ def generate_pdf():
         )
     except Exception as e:
         app.logger.exception("pdf error")
+        return jsonify({"error": str(e)}), 500
+
+
+def require_admin(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        admin_key = os.environ.get("ADMIN_KEY", "")
+        if not admin_key:
+            return "ADMIN_KEY not set in environment", 403
+        auth = request.headers.get("Authorization", "")
+        if auth.startswith("Basic "):
+            try:
+                _, password = base64.b64decode(auth[6:]).decode().split(":", 1)
+                if password == admin_key:
+                    return f(*args, **kwargs)
+            except Exception:
+                pass
+        return Response("Unauthorized", 401, {"WWW-Authenticate": 'Basic realm="Admin"'})
+    return decorated
+
+
+@app.route("/admin")
+@require_admin
+def admin_list():
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        rows = conn.execute(
+            "SELECT id, email, business_type, process_name, created_at FROM sessions ORDER BY created_at DESC"
+        ).fetchall()
+    return render_template("admin.html", sessions=rows)
+
+
+@app.route("/admin/<session_id>")
+@require_admin
+def admin_detail(session_id):
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        row = conn.execute("SELECT * FROM sessions WHERE id = ?", (session_id,)).fetchone()
+    if row is None:
+        return "Session not found", 404
+    return render_template("admin_session.html", s=row)
+
+
+@app.route("/api/session", methods=["POST"])
+def save_session():
+    try:
+        data = request.json
+        session_id = str(uuid.uuid4())
+        created_at = datetime.now(timezone.utc).isoformat()
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.execute(
+                """INSERT INTO sessions
+                   (id, email, business_type, process_name,
+                    transcript, diagram_asis, diagram_improved, report, created_at)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (
+                    session_id,
+                    data.get("email", ""),
+                    data.get("business_type", ""),
+                    data.get("process_name", ""),
+                    data.get("transcript", ""),
+                    data.get("diagram_asis", ""),
+                    data.get("diagram_improved", ""),
+                    data.get("report", ""),
+                    created_at,
+                ),
+            )
+            conn.commit()
+        return jsonify({"session_id": session_id})
+    except Exception as e:
+        app.logger.exception("session save error")
         return jsonify({"error": str(e)}), 500
 
 
