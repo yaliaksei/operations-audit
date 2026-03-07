@@ -7,6 +7,8 @@ from datetime import datetime, timezone
 from functools import wraps
 from pathlib import Path
 
+import yaml
+
 from dotenv import load_dotenv
 from flask import Flask, Response, jsonify, render_template, request, stream_with_context
 from google import genai
@@ -35,6 +37,16 @@ def init_db():
                 diagram_improved TEXT,
                 report           TEXT,
                 created_at       TEXT
+            )
+        """)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS contact_messages (
+                id         TEXT PRIMARY KEY,
+                name       TEXT,
+                email      TEXT,
+                subject    TEXT,
+                message    TEXT,
+                created_at TEXT
             )
         """)
         conn.commit()
@@ -77,6 +89,29 @@ def terms():
 @app.route("/privacy")
 def privacy():
     return render_template("privacy.html")
+
+
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")
+
+
+SEO_DIR = Path(__file__).parent / "seo"
+
+
+def load_seo_page(slug: str) -> dict | None:
+    path = SEO_DIR / f"{slug}.yaml"
+    if not path.exists():
+        return None
+    return yaml.safe_load(path.read_text())
+
+
+@app.route("/for/<slug>")
+def for_page(slug):
+    page = load_seo_page(slug)
+    if page is None:
+        return "Page not found", 404
+    return render_template("for.html", page=page)
 
 
 @app.route("/api/chat", methods=["POST"])
@@ -251,6 +286,30 @@ def save_session():
         return jsonify({"session_id": session_id})
     except Exception as e:
         app.logger.exception("session save error")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/api/contact", methods=["POST"])
+def save_contact():
+    try:
+        data = request.json
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.execute(
+                """INSERT INTO contact_messages (id, name, email, subject, message, created_at)
+                   VALUES (?, ?, ?, ?, ?, ?)""",
+                (
+                    str(uuid.uuid4()),
+                    data.get("name", ""),
+                    data.get("email", ""),
+                    data.get("subject", ""),
+                    data.get("message", ""),
+                    datetime.now(timezone.utc).isoformat(),
+                ),
+            )
+            conn.commit()
+        return jsonify({"ok": True})
+    except Exception as e:
+        app.logger.exception("contact error")
         return jsonify({"error": str(e)}), 500
 
 

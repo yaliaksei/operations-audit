@@ -223,6 +223,7 @@
                 Paste Transcript
               </button>
             </div>
+            <p class="mt-3 text-xs text-gray-400">By continuing you agree to our <a href="/terms" target="_blank" class="underline hover:text-gray-600">Terms of Service</a> and <a href="/privacy" target="_blank" class="underline hover:text-gray-600">Privacy Policy</a>.</p>
           </div>
 
           <!-- Paste mode -->
@@ -526,6 +527,8 @@ function getContextFromForm() {
 function runFromPaste() {
   const text = document.getElementById('paste-transcript').value.trim();
   if (!text || text.length < 50) { alert('Please paste at least a brief description of the process.'); return; }
+  const emailVal = document.getElementById('email').value.trim();
+  if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) { alert('Please enter a valid email address before continuing.'); document.getElementById('email').focus(); return; }
   getContextFromForm();
   state.transcript = text;
   showPhase('processing');
@@ -534,6 +537,8 @@ function runFromPaste() {
 }
 
 function startInterview() {
+  const emailVal = document.getElementById('email').value.trim();
+  if (!emailVal || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) { alert('Please enter a valid email address before continuing.'); document.getElementById('email').focus(); return; }
   getContextFromForm();
   showPhase('interview');
   setPipe(1);

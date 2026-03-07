@@ -167,13 +167,21 @@
       <h2 class="text-center text-2xl font-bold text-gray-900 mb-4">Works well for</h2>
       <p class="text-center text-sm text-gray-500 mb-10">Any repeatable process where someone is doing the same thing more than a few times a week.</p>
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        {% for label in [
-          'Client onboarding', 'Invoice & collections', 'Hiring & screening',
-          'Job scheduling', 'Contractor compliance', 'Inventory ordering',
-          'Quote & proposal', 'Support triage', 'Monthly reporting',
-          'Permit applications', 'Lead follow-up', 'Supplier sourcing'
+        {% for label, slug in [
+          ('Client onboarding',    'client-onboarding'),
+          ('Invoice & collections','invoice-collections'),
+          ('Hiring & screening',   'hiring-screening'),
+          ('Job scheduling',       'job-scheduling'),
+          ('Contractor compliance','contractor-compliance'),
+          ('Inventory ordering',   'inventory-ordering'),
+          ('Quote & proposal',     'quote-proposal'),
+          ('Support triage',       'support-triage'),
+          ('Monthly reporting',    'monthly-reporting'),
+          ('Permit applications',  'permit-applications'),
+          ('Lead follow-up',       'lead-follow-up'),
+          ('Supplier sourcing',    'supplier-sourcing'),
         ] %}
-        <div class="rounded-lg bg-gray-50 border border-gray-100 px-3 py-2.5 text-center text-xs font-medium text-gray-600">{{ label }}</div>
+        <a href="/for/{{ slug }}" class="rounded-lg bg-gray-50 border border-gray-100 px-3 py-2.5 text-center text-xs font-medium text-gray-600 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-700 transition-colors">{{ label }}</a>
         {% endfor %}
       </div>
     </div>
@@ -199,6 +207,7 @@
       <div class="flex gap-4 text-xs text-gray-400">
         <a href="/terms" class="hover:text-gray-600 transition-colors">Terms of Service</a>
         <a href="/privacy" class="hover:text-gray-600 transition-colors">Privacy Policy</a>
+        <a href="/contact" class="hover:text-gray-600 transition-colors">Contact</a>
       </div>
     </div>
   </footer>
