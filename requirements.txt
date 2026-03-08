@@ -5,3 +5,4 @@ gevent>=24.0
 python-dotenv>=1.0
 weasyprint>=62.0
 PyYAML>=6.0
+json-repair>=0.30

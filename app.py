@@ -114,6 +114,27 @@ def for_page(slug):
     return render_template("for.html", page=page)
 
 
+@app.route("/sitemap.xml")
+def sitemap():
+    base = request.host_url.rstrip("/")
+    static_paths = ["/", "/app", "/terms", "/privacy", "/contact"]
+    seo_slugs = [p.stem for p in SEO_DIR.glob("*.yaml")]
+
+    urls = []
+    for path in static_paths:
+        urls.append(f"  <url><loc>{base}{path}</loc></url>")
+    for slug in sorted(seo_slugs):
+        urls.append(f"  <url><loc>{base}/for/{slug}</loc></url>")
+
+    xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "\n".join(urls)
+        + "\n</urlset>"
+    )
+    return Response(xml, mimetype="application/xml")
+
+
 @app.route("/api/chat", methods=["POST"])
 def chat():
     """Streaming SSE endpoint for the interview agent."""
@@ -144,6 +165,20 @@ def chat():
     return Response(stream_with_context(generate()), mimetype="text/event-stream")
 
 
+JSON_AGENTS = {"extractor", "classifier", "evaluator", "diagram-as-is", "diagram-improved"}
+
+
+def repair_json_response(text: str) -> str:
+    """Strip markdown fences and repair malformed JSON from model output."""
+    import re
+    from json_repair import repair_json
+
+    text = re.sub(r"```json\s*", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"```\s*", "", text)
+    text = text.strip()
+    return repair_json(text, return_objects=False)
+
+
 @app.route("/api/invoke", methods=["POST"])
 def invoke():
     """Non-streaming endpoint for pipeline agents."""
@@ -163,7 +198,10 @@ def invoke():
             ),
             contents=user_content,
         )
-        return jsonify({"text": response.text})
+        text = response.text
+        if agent in JSON_AGENTS:
+            text = repair_json_response(text)
+        return jsonify({"text": text})
     except Exception as e:
         app.logger.exception("invoke error")
         return jsonify({"error": str(e)}), 500

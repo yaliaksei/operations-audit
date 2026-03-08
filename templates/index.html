@@ -1,434 +1,557 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-gray-50">
+<html lang="en" class="h-full">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fractional COO — Process Analyzer</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   body { font-family: 'Inter', sans-serif; }
-  .streaming::after { content: '▍'; animation: blink 1s step-end infinite; color: #6366f1; }
+  .gradient-bg { background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 40%, #f0fdf4 80%, #faf5ff 100%); min-height: 100vh; }
+  .streaming::after { content: '\25CD'; animation: blink 1s step-end infinite; color: #6366f1; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-  .fade-in { animation: fadeIn 0.2s ease; }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
-  .mic-recording { background: #fef2f2 !important; ring: none; }
+  .fade-in { animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  .mic-recording { background: #fef2f2 !important; }
   .mic-recording svg { color: #ef4444 !important; animation: micPulse 1s ease-in-out infinite; }
   @keyframes micPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.6;transform:scale(1.2)} }
+
+  /* Wizard */
+  .wiz-step { display: none; animation: wizIn 0.35s ease both; }
+  .wiz-step.active { display: block; }
+  @keyframes wizIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Glass card */
+  .glass-card {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  }
+
+  /* Modern input */
+  .modern-input {
+    display: block; width: 100%; border-radius: 0.75rem;
+    border: 1.5px solid #e2e8f0; padding: 0.75rem 1rem; padding-left: 2.75rem;
+    font-size: 0.95rem; color: #1e293b; background: white;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+  }
+  .modern-input:focus { border-color: #818cf8; box-shadow: 0 0 0 3px rgba(129,140,248,0.15); }
+  .modern-input::placeholder { color: #94a3b8; }
+  .modern-input.input-error { border-color: #f87171; box-shadow: 0 0 0 3px rgba(248,113,113,0.12); }
+
+  /* Wizard dots */
+  .wiz-dots { display: flex; align-items: center; justify-content: center; gap: 0; }
+  .wiz-dot {
+    width: 2rem; height: 2rem; border-radius: 9999px; border: 2px solid #e2e8f0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 600; color: #94a3b8; background: white;
+    transition: all 0.3s ease; flex-shrink: 0;
+  }
+  .wiz-dot.reached { border-color: #818cf8; color: #6366f1; background: #eef2ff; }
+  .wiz-dot.current { border-color: #6366f1; color: white; background: #6366f1; box-shadow: 0 0 0 4px rgba(99,102,241,0.15); }
+  .wiz-line { width: 3rem; height: 2px; background: #e2e8f0; transition: background 0.3s; }
+  .wiz-line.reached { background: #818cf8; }
+
+  /* Chat bubbles */
+  .chat-bubble-agent {
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+    border-radius: 1rem 1rem 1rem 0.25rem;
+  }
+  .chat-bubble-user {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem 1rem 0.25rem 1rem;
+  }
+
+  /* Phase transition */
+  .phase-panel { animation: phaseIn 0.35s ease both; }
+  @keyframes phaseIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Pipeline step glow */
+  .pipe-active { background: linear-gradient(135deg, #eef2ff, #e0e7ff); }
+
+  /* Typing dots */
+  .typing-dot { width: 6px; height: 6px; border-radius: 50%; background: #a5b4fc; animation: typingBounce 1.4s infinite both; }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingBounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} }
+
+  /* Processing pulse ring */
+  .pulse-ring { animation: pulseRing 2s cubic-bezier(0.4,0,0.6,1) infinite; }
+  @keyframes pulseRing { 0%{box-shadow:0 0 0 0 rgba(99,102,241,0.3)} 70%{box-shadow:0 0 0 12px rgba(99,102,241,0)} 100%{box-shadow:0 0 0 0 rgba(99,102,241,0)} }
 </style>
 </head>
-<body class="h-full">
+<body class="gradient-bg">
 
-<div class="min-h-full">
-
-  <!-- Top nav -->
-  <nav class="bg-white border-b border-gray-200">
-    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-      <div class="flex h-14 items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <!-- Briefcase icon -->
-          <svg class="h-5 w-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+<!-- Top nav -->
+<nav class="bg-white/80 backdrop-blur-md border-b border-gray-200/60 sticky top-0 z-20">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <div class="flex h-14 items-center justify-between">
+      <a href="/" class="flex items-center gap-2.5">
+        <div class="flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600">
+          <svg class="h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0" />
           </svg>
-          <span class="font-semibold text-gray-900 text-sm">Fractional COO</span>
-          <span class="text-gray-300 text-sm">/</span>
-          <span class="text-gray-500 text-sm">Process Analyzer</span>
         </div>
-        <span class="inline-flex items-center rounded-full bg-indigo-50 px-2.5 py-0.5 text-xs font-medium text-indigo-700">5-Agent Pipeline</span>
+        <span class="font-semibold text-gray-900 text-sm">Fractional COO</span>
+      </a>
+      <span class="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 border border-indigo-100 px-2.5 py-0.5 text-xs font-medium text-indigo-700">
+        <span class="h-1.5 w-1.5 rounded-full bg-indigo-500"></span>
+        AI-Powered Audit
+      </span>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- SETUP WIZARD — full-width, no sidebar                        -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div id="phase-setup" class="mx-auto max-w-xl px-4 sm:px-6 pt-12 pb-20">
+
+  <!-- Wizard dots -->
+  <div class="wiz-dots mb-10">
+    <div class="wiz-dot current" data-wiz="0">1</div>
+    <div class="wiz-line" id="wiz-line-0"></div>
+    <div class="wiz-dot" data-wiz="1">2</div>
+    <div class="wiz-line" id="wiz-line-1"></div>
+    <div class="wiz-dot" data-wiz="2">3</div>
+  </div>
+
+  <!-- Step 0: Welcome + Email -->
+  <div class="wiz-step active" id="wiz-0">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white mb-5 shadow-lg shadow-indigo-200">
+        <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
+        </svg>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Let's audit your process</h1>
+      <p class="text-gray-500 mt-3 text-base leading-relaxed max-w-md mx-auto">Answer a few quick questions, walk us through your workflow, and get an AI-powered assessment with diagrams and an action plan.</p>
+    </div>
+
+    <div class="glass-card rounded-2xl p-6 sm:p-8">
+      <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Your email</label>
+      <div class="relative mb-4">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+          <svg class="h-4.5 w-4.5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+          </svg>
+        </div>
+        <input id="email" type="email" placeholder="owner@example.com"
+          class="modern-input" onkeydown="if(event.key==='Enter')wizNext(1)" />
+      </div>
+      <p id="email-error" class="text-xs text-red-500 mb-3 hidden">Please enter a valid email address.</p>
+
+      <button onclick="wizNext(1)"
+        class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 transition-all active:scale-[0.98]">
+        Continue
+        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+        </svg>
+      </button>
+
+      <p class="mt-4 text-xs text-gray-400 text-center">By continuing you agree to our <a href="/terms" target="_blank" class="underline hover:text-gray-600">Terms of Service</a> and <a href="/privacy" target="_blank" class="underline hover:text-gray-600">Privacy Policy</a>.</p>
+    </div>
+  </div>
+
+  <!-- Step 1: Business + Process -->
+  <div class="wiz-step" id="wiz-1">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 mb-4">
+        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+        </svg>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-gray-900">About your business</h2>
+      <p class="text-gray-500 mt-2 text-sm">What do you do, and which process should we look at?</p>
+    </div>
+
+    <div class="glass-card rounded-2xl p-6 sm:p-8 space-y-5">
+      <div>
+        <label for="business-type" class="block text-sm font-semibold text-gray-700 mb-2">Business type</label>
+        <div class="relative">
+          <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+            <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+            </svg>
+          </div>
+          <input id="business-type" type="text" placeholder="e.g. General Contractor Admin"
+            class="modern-input" />
+        </div>
+      </div>
+
+      <div>
+        <label for="process-name" class="block text-sm font-semibold text-gray-700 mb-2">Process to analyze</label>
+        <div class="relative">
+          <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+            <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+            </svg>
+          </div>
+          <input id="process-name" type="text" placeholder="e.g. Sub onboarding & compliance"
+            class="modern-input" onkeydown="if(event.key==='Enter')wizNext(2)" />
+        </div>
+      </div>
+
+      <div class="flex gap-3 pt-2">
+        <button onclick="wizBack(0)"
+          class="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-gray-600 ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition-all">
+          <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+          </svg>
+          Back
+        </button>
+        <button onclick="wizNext(2)"
+          class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-all active:scale-[0.98]">
+          Continue
+          <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+          </svg>
+        </button>
       </div>
     </div>
-  </nav>
+  </div>
 
-  <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-8">
-    <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+  <!-- Step 2: Volume + Channels + Action -->
+  <div class="wiz-step" id="wiz-2">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-green-50 text-green-600 mb-4">
+        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+        </svg>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold text-gray-900">Almost there</h2>
+      <p class="text-gray-500 mt-2 text-sm">A few more details so the analysis is calibrated to your scale.</p>
+    </div>
 
-      <!-- Sidebar -->
-      <aside class="hidden lg:block lg:col-span-3">
-        <nav class="space-y-1 sticky top-6">
-          <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Pipeline</p>
+    <div class="glass-card rounded-2xl p-6 sm:p-8 space-y-5">
+      <div>
+        <label for="weekly-volume" class="block text-sm font-semibold text-gray-700 mb-2">Weekly volume</label>
+        <div class="relative">
+          <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+            <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+            </svg>
+          </div>
+          <input id="weekly-volume" type="text" placeholder="e.g. 8 new subs/week"
+            class="modern-input" />
+        </div>
+      </div>
 
-          <div class="pipe-step flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-all" id="pipe-0">
-            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-xs font-medium text-gray-500 flex-shrink-0">1</span>
-            <span class="font-medium text-gray-700">Setup</span>
+      <div>
+        <label for="channels" class="block text-sm font-semibold text-gray-700 mb-2">Tools &amp; channels</label>
+        <div class="relative">
+          <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+            <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+            </svg>
           </div>
-          <div class="pipe-step flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-all" id="pipe-1">
-            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-xs font-medium text-gray-500 flex-shrink-0">2</span>
-            <span class="font-medium text-gray-700">Interview</span>
-          </div>
-          <div class="pipe-step flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-all" id="pipe-2">
-            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-xs font-medium text-gray-500 flex-shrink-0">3</span>
-            <span class="font-medium text-gray-700">Extract</span>
-          </div>
-          <div class="pipe-step flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-all" id="pipe-3">
-            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-xs font-medium text-gray-500 flex-shrink-0">4</span>
-            <span class="font-medium text-gray-700">Classify</span>
-          </div>
-          <div class="pipe-step flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-all" id="pipe-4">
-            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-xs font-medium text-gray-500 flex-shrink-0">5</span>
-            <span class="font-medium text-gray-700">Evaluate</span>
-          </div>
-          <div class="pipe-step flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-all" id="pipe-5">
-            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-xs font-medium text-gray-500 flex-shrink-0">6</span>
-            <span class="font-medium text-gray-700">Diagrams</span>
-          </div>
-          <div class="pipe-step flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-all" id="pipe-6">
-            <span class="flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-xs font-medium text-gray-500 flex-shrink-0">7</span>
-            <span class="font-medium text-gray-700">Report</span>
-          </div>
+          <input id="channels" type="text" placeholder="e.g. Email, phone, spreadsheet"
+            class="modern-input" />
+        </div>
+      </div>
 
-          <!-- Progress -->
-          <div class="pt-4">
-            <div class="flex items-center justify-between mb-1">
-              <span class="text-xs text-gray-400">Progress</span>
-              <span class="text-xs text-gray-400" id="progress-pct">0%</span>
-            </div>
-            <div class="w-full bg-gray-200 rounded-full h-1.5">
-              <div class="bg-indigo-600 h-1.5 rounded-full transition-all duration-500" id="progress" style="width:0%"></div>
-            </div>
-          </div>
-        </nav>
-      </aside>
+      <!-- Action buttons -->
+      <div class="pt-3 space-y-3">
+        <div class="flex gap-3">
+          <button onclick="wizBack(1)"
+            class="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-gray-600 ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition-all">
+            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            Back
+          </button>
+          <button onclick="startInterview()"
+            class="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-all active:scale-[0.98]">
+            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
+            </svg>
+            Start Interview
+          </button>
+        </div>
+        <button onclick="togglePasteMode()"
+          class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-gray-600 ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition-all">
+          <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
+          </svg>
+          Or paste an existing transcript
+        </button>
+      </div>
+    </div>
 
-      <!-- Main content -->
-      <main class="lg:col-span-9">
-
-        <!-- Mobile pipeline steps -->
-        <div class="lg:hidden mb-6">
-          <div class="flex gap-1 overflow-x-auto pb-2">
-            <div class="pipe-step flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs whitespace-nowrap transition-all" id="pipe-0-m">
-              <span class="h-4 w-4 flex items-center justify-center rounded-full bg-gray-200 text-gray-500 text-xs flex-shrink-0">1</span>Setup
-            </div>
-            <div class="pipe-step flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs whitespace-nowrap transition-all" id="pipe-1-m">
-              <span class="h-4 w-4 flex items-center justify-center rounded-full bg-gray-200 text-gray-500 text-xs flex-shrink-0">2</span>Interview
-            </div>
-            <div class="pipe-step flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs whitespace-nowrap transition-all" id="pipe-2-m">
-              <span class="h-4 w-4 flex items-center justify-center rounded-full bg-gray-200 text-gray-500 text-xs flex-shrink-0">3</span>Extract
-            </div>
-            <div class="pipe-step flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs whitespace-nowrap transition-all" id="pipe-3-m">
-              <span class="h-4 w-4 flex items-center justify-center rounded-full bg-gray-200 text-gray-500 text-xs flex-shrink-0">4</span>Classify
-            </div>
-            <div class="pipe-step flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs whitespace-nowrap transition-all" id="pipe-4-m">
-              <span class="h-4 w-4 flex items-center justify-center rounded-full bg-gray-200 text-gray-500 text-xs flex-shrink-0">5</span>Evaluate
-            </div>
-            <div class="pipe-step flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs whitespace-nowrap transition-all" id="pipe-5-m">
-              <span class="h-4 w-4 flex items-center justify-center rounded-full bg-gray-200 text-gray-500 text-xs flex-shrink-0">6</span>Diagrams
-            </div>
-            <div class="pipe-step flex items-center gap-1.5 px-2.5 py-1.5 rounded text-xs whitespace-nowrap transition-all" id="pipe-6-m">
-              <span class="h-4 w-4 flex items-center justify-center rounded-full bg-gray-200 text-gray-500 text-xs flex-shrink-0">7</span>Report
-            </div>
+    <!-- Paste mode -->
+    <div id="paste-mode" class="hidden mt-4">
+      <div class="glass-card rounded-2xl p-6 sm:p-8">
+        <div class="flex items-start gap-3 mb-4">
+          <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50">
+            <svg class="h-4 w-4 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+            </svg>
           </div>
-          <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
-            <div class="bg-indigo-600 h-1 rounded-full transition-all duration-500" id="progress-m" style="width:0%"></div>
+          <div>
+            <h3 class="text-sm font-semibold text-gray-900">Paste your transcript</h3>
+            <p class="text-xs text-gray-500 mt-0.5">Any format — Q&amp;A, notes, or free-form. Paste previous answers to skip the interview.</p>
+          </div>
+        </div>
+        <textarea id="paste-transcript" rows="7"
+          placeholder="e.g. When a new sub calls in, I first ask for their license number. Then I email them a W-9 form and wait for it back. I track everything in a spreadsheet..."
+          class="block w-full rounded-xl border-1.5 border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 outline-none resize-y bg-white"></textarea>
+        <div class="mt-3">
+          <button onclick="runFromPaste()"
+            class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-all active:scale-[0.98]">
+            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+            </svg>
+            Analyze Transcript
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- PIPELINE LAYOUT — sidebar + main (hidden until interview)    -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div id="pipeline-layout" class="hidden mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-8">
+  <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+
+    <!-- Sidebar -->
+    <aside class="hidden lg:block lg:col-span-3">
+      <nav class="space-y-1 sticky top-20">
+        <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Progress</p>
+
+        <div class="pipe-step flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all" id="pipe-0">
+          <span class="flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 text-xs font-semibold text-gray-500 flex-shrink-0">1</span>
+          <div>
+            <span class="font-medium text-gray-700 block">Interview</span>
+            <span class="text-xs text-gray-400">Tell us about your process</span>
+          </div>
+        </div>
+        <div class="pipe-step flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all" id="pipe-1">
+          <span class="flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 text-xs font-semibold text-gray-500 flex-shrink-0">2</span>
+          <div>
+            <span class="font-medium text-gray-700 block">Analysis</span>
+            <span class="text-xs text-gray-400">AI reviews your workflow</span>
+          </div>
+        </div>
+        <div class="pipe-step flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all" id="pipe-2">
+          <span class="flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 text-xs font-semibold text-gray-500 flex-shrink-0">3</span>
+          <div>
+            <span class="font-medium text-gray-700 block">Report</span>
+            <span class="text-xs text-gray-400">Your improvement plan</span>
           </div>
         </div>
 
-        <!-- ── SETUP ── -->
-        <div id="phase-setup">
-          <div class="mb-6">
-            <h1 class="text-xl font-semibold text-gray-900">Business Context</h1>
-            <p class="mt-1 text-sm text-gray-500">Tell us about your business so the analysis is calibrated correctly. Estimates are fine.</p>
-          </div>
-
-          <div class="bg-white shadow-sm ring-1 ring-gray-200 rounded-lg p-6">
-            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-              <div>
-                <label for="business-type" class="block text-sm font-medium text-gray-700 mb-1.5">
-                  Business type
-                </label>
-                <div class="relative">
-                  <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
-                    </svg>
-                  </div>
-                  <input id="business-type" type="text" placeholder="e.g. General Contractor Admin"
-                    class="block w-full rounded-md border border-gray-300 pl-9 pr-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none" />
-                </div>
-              </div>
-
-              <div>
-                <label for="weekly-volume" class="block text-sm font-medium text-gray-700 mb-1.5">
-                  Weekly volume
-                </label>
-                <div class="relative">
-                  <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
-                    </svg>
-                  </div>
-                  <input id="weekly-volume" type="text" placeholder="e.g. 8 new subs/week"
-                    class="block w-full rounded-md border border-gray-300 pl-9 pr-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none" />
-                </div>
-              </div>
-
-              <div>
-                <label for="process-name" class="block text-sm font-medium text-gray-700 mb-1.5">
-                  Process to analyze
-                </label>
-                <div class="relative">
-                  <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
-                    </svg>
-                  </div>
-                  <input id="process-name" type="text" placeholder="e.g. Sub onboarding & compliance"
-                    class="block w-full rounded-md border border-gray-300 pl-9 pr-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none" />
-                </div>
-              </div>
-
-              <div>
-                <label for="channels" class="block text-sm font-medium text-gray-700 mb-1.5">
-                  Tools &amp; channels
-                </label>
-                <div class="relative">
-                  <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
-                    </svg>
-                  </div>
-                  <input id="channels" type="text" placeholder="e.g. Email, phone, spreadsheet"
-                    class="block w-full rounded-md border border-gray-300 pl-9 pr-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none" />
-                </div>
-              </div>
-
-              <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-1.5">
-                  Your email
-                </label>
-                <div class="relative">
-                  <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
-                    </svg>
-                  </div>
-                  <input id="email" type="email" placeholder="e.g. owner@example.com"
-                    class="block w-full rounded-md border border-gray-300 pl-9 pr-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none" />
-                </div>
-              </div>
-            </div>
-
-            <div class="mt-6 flex items-center gap-3 flex-wrap">
-              <button onclick="startInterview()"
-                class="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 transition-colors">
-                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
-                </svg>
-                Start Interview
-              </button>
-              <button onclick="togglePasteMode()"
-                class="inline-flex items-center gap-2 rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors">
-                <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
-                </svg>
-                Paste Transcript
-              </button>
-            </div>
-            <p class="mt-3 text-xs text-gray-400">By continuing you agree to our <a href="/terms" target="_blank" class="underline hover:text-gray-600">Terms of Service</a> and <a href="/privacy" target="_blank" class="underline hover:text-gray-600">Privacy Policy</a>.</p>
-          </div>
-
-          <!-- Paste mode -->
-          <div id="paste-mode" class="hidden mt-4">
-            <div class="bg-white shadow-sm ring-1 ring-gray-200 rounded-lg p-6">
-              <div class="flex items-start gap-3 mb-4">
-                <div class="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-50">
-                  <svg class="h-4 w-4 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 class="text-sm font-medium text-gray-900">Paste your transcript</h3>
-                  <p class="text-xs text-gray-500 mt-0.5">Any format — Q&amp;A, notes, or a free-form description. Paste your previous answers here to skip the interview.</p>
-                </div>
-              </div>
-              <textarea id="paste-transcript" rows="8"
-                placeholder="e.g. When a new sub calls in, I first ask for their license number. Then I email them a W-9 form and wait for it back. I track everything in a spreadsheet..."
-                class="block w-full rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none resize-y"></textarea>
-              <div class="mt-3">
-                <button onclick="runFromPaste()"
-                  class="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors">
-                  <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
-                  </svg>
-                  Analyze Transcript
-                </button>
-              </div>
-            </div>
+        <div class="pt-4">
+          <div class="w-full bg-gray-200 rounded-full h-1.5">
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-1.5 rounded-full transition-all duration-500" id="progress" style="width:0%"></div>
           </div>
         </div>
+      </nav>
+    </aside>
 
-        <!-- ── INTERVIEW ── -->
-        <div id="phase-interview" class="hidden">
-          <div class="mb-6">
-            <h1 class="text-xl font-semibold text-gray-900">Interview</h1>
-            <p class="mt-1 text-sm text-gray-500">Answer each question in detail. Click <strong class="font-medium text-gray-700">Finish</strong> when you've walked through the complete process.</p>
+    <!-- Main content -->
+    <main class="lg:col-span-9">
+
+      <!-- Mobile pipeline steps -->
+      <div class="lg:hidden mb-6">
+        <div class="flex gap-2">
+          <div class="pipe-step flex-1 flex flex-col items-center gap-1 px-2 py-2 rounded-lg text-xs text-center transition-all" id="pipe-0-m">
+            <span class="h-6 w-6 flex items-center justify-center rounded-full bg-gray-200 text-gray-500 text-xs font-semibold flex-shrink-0">1</span>
+            <span class="font-medium">Interview</span>
           </div>
+          <div class="flex items-center text-gray-300 text-lg pb-3">›</div>
+          <div class="pipe-step flex-1 flex flex-col items-center gap-1 px-2 py-2 rounded-lg text-xs text-center transition-all" id="pipe-1-m">
+            <span class="h-6 w-6 flex items-center justify-center rounded-full bg-gray-200 text-gray-500 text-xs font-semibold flex-shrink-0">2</span>
+            <span class="font-medium">Analysis</span>
+          </div>
+          <div class="flex items-center text-gray-300 text-lg pb-3">›</div>
+          <div class="pipe-step flex-1 flex flex-col items-center gap-1 px-2 py-2 rounded-lg text-xs text-center transition-all" id="pipe-2-m">
+            <span class="h-6 w-6 flex items-center justify-center rounded-full bg-gray-200 text-gray-500 text-xs font-semibold flex-shrink-0">3</span>
+            <span class="font-medium">Report</span>
+          </div>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-1 mt-2">
+          <div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-1 rounded-full transition-all duration-500" id="progress-m" style="width:0%"></div>
+        </div>
+      </div>
 
-          <!-- Thinking indicator -->
-          <div id="status-interview" class="hidden mb-3">
-            <span class="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700">
-              <svg class="h-3 w-3 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+      <!-- ── INTERVIEW ── -->
+      <div id="phase-interview" class="hidden phase-panel">
+        <div class="mb-6">
+          <h1 class="text-xl font-bold text-gray-900">Interview</h1>
+          <p class="mt-1 text-sm text-gray-500">Walk us through your process step by step. Click <strong class="font-medium text-gray-700">Finish</strong> when done.</p>
+        </div>
+
+        <div id="status-interview" class="hidden mb-3">
+          <span class="inline-flex items-center gap-2.5 rounded-full bg-indigo-50 border border-indigo-100 px-3.5 py-1.5 text-xs font-medium text-indigo-700">
+            <span class="flex gap-1"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></span>
+            Thinking...
+          </span>
+        </div>
+
+        <div class="glass-card rounded-2xl overflow-hidden">
+          <div id="chat-area" class="p-5 space-y-4 overflow-y-auto" style="min-height:260px;max-height:440px;scroll-behavior:smooth;"></div>
+          <div class="border-t border-gray-200/60 p-3 flex gap-2 bg-white/60 backdrop-blur-sm">
+            <input id="user-input" type="text" placeholder="Describe what happens next..."
+              onkeydown="if(event.key==='Enter') sendMessage()"
+              class="block flex-1 rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 outline-none bg-white" />
+            <button id="mic-btn" onclick="toggleMic()" title="Click to speak"
+              class="inline-flex items-center justify-center rounded-xl bg-white px-3 py-2.5 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition-colors">
+              <svg id="mic-icon" class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
               </svg>
-              Thinking...
-            </span>
-          </div>
-
-          <div class="bg-white shadow-sm ring-1 ring-gray-200 rounded-lg overflow-hidden">
-            <div id="chat-area" class="p-5 space-y-5 overflow-y-auto" style="min-height:240px;max-height:420px;scroll-behavior:smooth;"></div>
-            <div class="border-t border-gray-200 p-3 flex gap-2 bg-gray-50">
-              <input id="user-input" type="text" placeholder="Describe what happens..."
-                onkeydown="if(event.key==='Enter') sendMessage()"
-                class="block flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none" />
-              <button id="mic-btn" onclick="toggleMic()" title="Hold to speak"
-                class="inline-flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors">
-                <svg id="mic-icon" class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
-                </svg>
-              </button>
-              <button id="send-btn" onclick="sendMessage()"
-                class="inline-flex items-center gap-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50 transition-colors">
-                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
-                </svg>
-                Send
-              </button>
-              <button id="done-btn" onclick="endInterview()"
-                class="inline-flex items-center gap-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors">
-                <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-                Finish
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── PROCESSING ── -->
-        <div id="phase-processing" class="hidden">
-          <div class="mb-6">
-            <h1 class="text-xl font-semibold text-gray-900">Running Pipeline</h1>
-            <p class="mt-1 text-sm text-gray-500">Running agents 2–5 on your transcript. This takes 30–60 seconds.</p>
-          </div>
-
-          <div class="bg-white shadow-sm ring-1 ring-gray-200 rounded-lg p-6">
-            <!-- Current step -->
-            <div class="flex items-center gap-3 mb-5">
-              <svg id="proc-dot" class="h-5 w-5 text-indigo-600 animate-spin flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-              </svg>
-              <span id="proc-text" class="text-sm font-medium text-gray-700">Initializing...</span>
-            </div>
-
-            <!-- Log -->
-            <div class="rounded-md bg-gray-950 p-4 overflow-y-auto" style="max-height:280px;">
-              <pre id="processing-log" class="text-xs text-gray-400 leading-relaxed whitespace-pre-wrap font-mono"></pre>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── VERIFY DIAGRAM ── -->
-        <div id="phase-verify" class="hidden">
-          <div class="mb-6">
-            <h1 class="text-xl font-semibold text-gray-900">Verify Process Flow</h1>
-            <p class="mt-1 text-sm text-gray-500">Review the diagram below. If it looks right, continue to analysis. If something is wrong, go back and add more detail.</p>
-          </div>
-
-          <div class="bg-white shadow-sm ring-1 ring-gray-200 rounded-lg p-6 mb-4">
-            <div class="flex items-center gap-2 mb-4">
-              <svg class="h-4 w-4 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 3M21 7.5H7.5" />
-              </svg>
-              <h3 class="text-sm font-semibold text-gray-700">Current Process — As Captured</h3>
-            </div>
-            <div class="flex gap-4 items-start">
-              <div id="diagram-as-is" class="overflow-x-auto flex-1 min-w-0"></div>
-              <div id="detail-as-is" class="hidden w-72 flex-shrink-0"></div>
-            </div>
-          </div>
-
-          <div class="flex gap-3 flex-wrap">
-            <button onclick="proceedToAnalysis()"
-              class="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors">
+            </button>
+            <button id="send-btn" onclick="sendMessage()"
+              class="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-50 transition-all active:scale-[0.97]">
               <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+              </svg>
+              Send
+            </button>
+            <button id="done-btn" onclick="endInterview()"
+              class="inline-flex items-center gap-1.5 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition-colors">
+              <svg class="h-4 w-4 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
               </svg>
-              Looks correct — run analysis
+              Finish
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PROCESSING ── -->
+      <div id="phase-processing" class="hidden phase-panel">
+        <div class="mb-6">
+          <h1 class="text-xl font-bold text-gray-900">Analysing your workflow</h1>
+          <p class="mt-1 text-sm text-gray-500">This usually takes about a minute.</p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-8 flex flex-col items-center text-center gap-6">
+          <div id="proc-dot" class="relative flex items-center justify-center">
+            <span class="absolute inline-flex h-16 w-16 rounded-full bg-indigo-100 opacity-60 animate-ping"></span>
+            <span class="relative inline-flex h-12 w-12 rounded-full bg-indigo-600 items-center justify-center">
+              <svg class="h-6 w-6 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+              </svg>
+            </span>
+          </div>
+          <div>
+            <p id="proc-text" class="text-base font-semibold text-gray-800">Starting analysis…</p>
+            <p id="proc-subtext" class="text-sm text-gray-400 mt-1">Hang tight</p>
+          </div>
+          <div class="w-full max-w-xs">
+            <div class="w-full bg-gray-100 rounded-full h-1.5">
+              <div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-1.5 rounded-full transition-all duration-700" id="proc-bar" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── VERIFY DIAGRAM ── -->
+      <div id="phase-verify" class="hidden phase-panel">
+        <div class="mb-6">
+          <h1 class="text-xl font-bold text-gray-900">Verify Process Flow</h1>
+          <p class="mt-1 text-sm text-gray-500">Review the diagram. If it looks right, continue. If something's off, start over.</p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6 mb-4">
+          <div class="flex items-center gap-2 mb-4">
+            <svg class="h-4 w-4 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 3M21 7.5H7.5" />
+            </svg>
+            <h3 class="text-sm font-semibold text-gray-700">Current Process — As Captured</h3>
+          </div>
+          <div class="flex gap-4 items-start">
+            <div id="diagram-as-is" class="overflow-x-auto flex-1 min-w-0"></div>
+            <div id="detail-as-is" class="hidden w-72 flex-shrink-0"></div>
+          </div>
+        </div>
+
+        <div class="flex gap-3 flex-wrap">
+          <button onclick="proceedToAnalysis()"
+            class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-all active:scale-[0.98]">
+            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            Looks correct — run analysis
+          </button>
+          <button onclick="resetApp()"
+            class="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition-all">
+            <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+            </svg>
+            Start over
+          </button>
+        </div>
+      </div>
+
+      <!-- ── REPORT ── -->
+      <div id="phase-report" class="hidden phase-panel">
+        <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+          <div>
+            <h1 class="text-xl font-bold text-gray-900">Operational Assessment</h1>
+            <p class="mt-1 text-sm text-gray-500">Your process has been analyzed.</p>
+          </div>
+          <div class="flex gap-2 flex-wrap">
+            <button onclick="copyReport()"
+              class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-all">
+              <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
+              </svg>
+              Copy
+            </button>
+            <button id="download-btn" onclick="downloadPDF(event)" style="display:none"
+              class="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition-all">
+              <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              </svg>
+              Download PDF
             </button>
             <button onclick="resetApp()"
-              class="inline-flex items-center gap-2 rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors">
+              class="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition-all">
               <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
               </svg>
-              Start over
+              Start Over
             </button>
           </div>
         </div>
 
-        <!-- ── REPORT ── -->
-        <div id="phase-report" class="hidden">
-          <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
-            <div>
-              <h1 class="text-xl font-semibold text-gray-900">Operational Assessment</h1>
-              <p class="mt-1 text-sm text-gray-500">Your process has been analyzed.</p>
-            </div>
-            <div class="flex gap-2 flex-wrap">
-              <button onclick="copyReport()"
-                class="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors">
-                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
-                </svg>
-                Copy
-              </button>
-              <button id="download-btn" onclick="downloadPDF(event)" style="display:none"
-                class="inline-flex items-center gap-2 rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors">
-                <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                </svg>
-                Download PDF
-              </button>
-              <button onclick="resetApp()"
-                class="inline-flex items-center gap-2 rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-colors">
-                <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
-                </svg>
-                Start Over
-              </button>
-            </div>
+        <div class="glass-card rounded-2xl p-6 mb-4">
+          <div class="flex items-center gap-2 mb-4">
+            <svg class="h-4 w-4 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
+            <h3 class="text-sm font-semibold text-gray-700">Improved Process — With Recommendations</h3>
+            <span class="ml-auto inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
+              <span class="mr-1 h-1.5 w-1.5 rounded-full bg-green-500 inline-block"></span>automate
+            </span>
+            <span class="inline-flex items-center rounded-full bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700">
+              <span class="mr-1 h-1.5 w-1.5 rounded-full bg-amber-400 inline-block"></span>improve
+            </span>
+            <span class="inline-flex items-center rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700">
+              <span class="mr-1 h-1.5 w-1.5 rounded-full bg-blue-400 inline-block"></span>replace
+            </span>
           </div>
-
-          <!-- Improved flow diagram -->
-          <div class="bg-white shadow-sm ring-1 ring-gray-200 rounded-lg p-6 mb-4">
-            <div class="flex items-center gap-2 mb-4">
-              <svg class="h-4 w-4 text-green-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-              </svg>
-              <h3 class="text-sm font-semibold text-gray-700">Improved Process — With Recommendations</h3>
-              <span class="ml-auto inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700">
-                <span class="mr-1 h-1.5 w-1.5 rounded-full bg-green-500 inline-block"></span>automate
-              </span>
-              <span class="inline-flex items-center rounded-full bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700">
-                <span class="mr-1 h-1.5 w-1.5 rounded-full bg-amber-400 inline-block"></span>improve
-              </span>
-              <span class="inline-flex items-center rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700">
-                <span class="mr-1 h-1.5 w-1.5 rounded-full bg-blue-400 inline-block"></span>replace
-              </span>
-            </div>
-            <div class="flex gap-4 items-start">
-              <div id="diagram-improved" class="overflow-x-auto flex-1 min-w-0"></div>
-              <div id="detail-improved" class="hidden w-72 flex-shrink-0"></div>
-            </div>
-          </div>
-
-          <!-- Report text -->
-          <div class="bg-white shadow-sm ring-1 ring-gray-200 rounded-lg p-6">
-            <pre id="final-report" class="text-sm text-gray-800 leading-7 whitespace-pre-wrap font-sans"></pre>
+          <div class="flex gap-4 items-start">
+            <div id="diagram-improved" class="overflow-x-auto flex-1 min-w-0"></div>
+            <div id="detail-improved" class="hidden w-72 flex-shrink-0"></div>
           </div>
         </div>
 
-      </main>
-    </div>
+        <div class="glass-card rounded-2xl p-6">
+          <pre id="final-report" class="text-sm text-gray-800 leading-7 whitespace-pre-wrap font-sans"></pre>
+        </div>
+      </div>
+
+    </main>
   </div>
 </div>
 
@@ -439,19 +562,67 @@ const state = {
   classifiedSteps: null, verdicts: null, report: ''
 };
 
+// ─── WIZARD NAVIGATION ─────────────────────────────────────────
+function showWizStep(n) {
+  document.querySelectorAll('.wiz-step').forEach((el, i) => {
+    el.classList.toggle('active', i === n);
+  });
+  document.querySelectorAll('.wiz-dot').forEach((el, i) => {
+    el.classList.remove('reached', 'current');
+    if (i < n) el.classList.add('reached');
+    if (i === n) el.classList.add('current');
+  });
+  document.querySelectorAll('.wiz-line').forEach((el, i) => {
+    el.classList.toggle('reached', i < n);
+  });
+  // Focus first input in new step
+  const step = document.getElementById('wiz-' + n);
+  if (step) {
+    const inp = step.querySelector('input');
+    if (inp) setTimeout(() => inp.focus(), 100);
+  }
+}
+
+function wizNext(step) {
+  if (step === 1) {
+    const emailEl = document.getElementById('email');
+    const errEl = document.getElementById('email-error');
+    const val = emailEl.value.trim();
+    if (!val || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+      emailEl.classList.add('input-error');
+      errEl.classList.remove('hidden');
+      emailEl.focus();
+      return;
+    }
+    emailEl.classList.remove('input-error');
+    errEl.classList.add('hidden');
+  }
+  showWizStep(step);
+}
+
+function wizBack(step) {
+  showWizStep(step);
+}
+
+// ─── PIPELINE STEPS ─────────────────────────────────────────────
+// Map internal step 0-6 → visual step 0-2 (Interview, Analysis, Report)
+const PIPE_MAP = [0, 0, 1, 1, 1, 1, 2];
+
 function setPipe(n) {
-  const TOTAL = 6;
+  const visual = PIPE_MAP[Math.min(n, PIPE_MAP.length - 1)];
+  const TOTAL = 2;
+
   document.querySelectorAll('.pipe-step').forEach((el) => {
     const idx = parseInt(el.id.replace('pipe-','').replace('-m',''));
     const dot = el.querySelector('span');
-    el.classList.remove('bg-indigo-50','text-indigo-700','text-gray-700','text-gray-500');
+    el.classList.remove('bg-indigo-50','pipe-active','text-indigo-700','text-gray-700','text-gray-500');
     if (dot) dot.classList.remove('bg-indigo-600','text-white','bg-green-100','text-green-700','bg-gray-100','text-gray-500');
 
-    if (idx < n) {
+    if (idx < visual) {
       el.classList.add('text-gray-500');
-      if (dot) { dot.classList.add('bg-green-100','text-green-700'); dot.innerHTML = '✓'; }
-    } else if (idx === n) {
-      el.classList.add('bg-indigo-50','text-indigo-700');
+      if (dot) { dot.classList.add('bg-green-100','text-green-700'); dot.innerHTML = '\u2713'; }
+    } else if (idx === visual) {
+      el.classList.add('pipe-active','text-indigo-700');
       if (dot) dot.classList.add('bg-indigo-600','text-white');
     } else {
       el.classList.add('text-gray-500');
@@ -459,19 +630,30 @@ function setPipe(n) {
     }
   });
 
-  const pct = Math.round(n / TOTAL * 100) + '%';
-  document.getElementById('progress').style.width = pct;
-  document.getElementById('progress-pct').textContent = pct;
+  const pct = Math.round(n / 6 * 100);
+  const pctStr = pct + '%';
+  document.getElementById('progress').style.width = pctStr;
   const pm = document.getElementById('progress-m');
-  if (pm) pm.style.width = pct;
+  if (pm) pm.style.width = pctStr;
+  const pb = document.getElementById('proc-bar');
+  if (pb) pb.style.width = pctStr;
 }
 
 function showPhase(name) {
-  ['setup','interview','processing','verify','report'].forEach(p =>
-    document.getElementById('phase-'+p).classList.add('hidden'));
-  document.getElementById('phase-'+name).classList.remove('hidden');
+  const setup = document.getElementById('phase-setup');
+  const pipeline = document.getElementById('pipeline-layout');
+  if (name === 'setup') {
+    setup.classList.remove('hidden');
+    pipeline.classList.add('hidden');
+  } else {
+    setup.classList.add('hidden');
+    pipeline.classList.remove('hidden');
+    ['interview','processing','verify','report'].forEach(p =>
+      document.getElementById('phase-'+p).classList.toggle('hidden', p !== name));
+  }
 }
 
+// ─── STREAMING CHAT ─────────────────────────────────────────────
 async function callClaude(messages, agent, onStream) {
   const response = await fetch('/api/chat', {
     method: 'POST',
@@ -555,16 +737,16 @@ async function sendFirstQuestion() {
 function appendMessage(role, text, streaming = false) {
   const area = document.getElementById('chat-area');
   const wrap = document.createElement('div');
-  wrap.className = 'flex gap-3 fade-in';
-
   const isAgent = role === 'agent';
+  wrap.className = 'flex gap-3 fade-in ' + (isAgent ? '' : 'flex-row-reverse');
+
   wrap.innerHTML = `
-    <div class="flex-shrink-0 h-7 w-7 rounded-full flex items-center justify-center text-xs font-semibold ${isAgent ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-600'}">
+    <div class="flex-shrink-0 h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold ${isAgent ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white' : 'bg-gray-100 text-gray-600'}">
       ${isAgent ? 'AI' : 'You'}
     </div>
-    <div class="flex-1 min-w-0">
-      <p class="text-xs font-medium mb-1 ${isAgent ? 'text-indigo-600' : 'text-gray-500'}">${isAgent ? 'Interviewer' : 'You'}</p>
-      <div class="text-sm text-gray-700 leading-relaxed ${streaming ? 'streaming' : ''}" id="msg-${Date.now()}">${escHtml(text)}</div>
+    <div class="max-w-[80%]">
+      <div class="text-[11px] font-medium mb-1 ${isAgent ? 'text-indigo-500' : 'text-gray-400 text-right'}">${isAgent ? 'Interviewer' : 'You'}</div>
+      <div class="${isAgent ? 'chat-bubble-agent' : 'chat-bubble-user'} px-4 py-3 text-sm text-gray-700 leading-relaxed ${streaming ? 'streaming' : ''}" id="msg-${Date.now()}">${escHtml(text)}</div>
     </div>`;
 
   area.appendChild(wrap);
@@ -615,21 +797,32 @@ async function endInterview() {
   runPipeline();
 }
 
-function logProc(msg) {
-  const el = document.getElementById('processing-log');
-  el.textContent += msg + '\n';
-  el.scrollTop = el.scrollHeight;
-  document.getElementById('proc-text').textContent = msg;
+function logProc(msg, sub) {
+  const t = document.getElementById('proc-text');
+  const s = document.getElementById('proc-subtext');
+  if (t) t.textContent = msg;
+  if (s) s.textContent = sub || '';
+}
+
+function sanitizeJSONStrings(text) {
+  // Escape literal control characters that appear inside JSON string values
+  return text.replace(/"((?:[^"\\]|\\.)*)"/g, (match) =>
+    match.replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t')
+  );
 }
 
 function safeParseJSON(text) {
   text = text.replace(/```json\n?/gi,'').replace(/```\n?/g,'').trim();
   try { return JSON.parse(text); } catch(_) {}
+  const sanitized = sanitizeJSONStrings(text);
+  try { return JSON.parse(sanitized); } catch(_) {}
   const start = text.indexOf('['), end = text.lastIndexOf(']');
   if (start !== -1 && end !== -1 && end > start) {
     const slice = text.slice(start, end + 1);
     try { return JSON.parse(slice); } catch(_) {
-      try { return JSON.parse(repairJSON(slice)); } catch(_2) {}
+      try { return JSON.parse(sanitizeJSONStrings(slice)); } catch(_2) {
+        try { return JSON.parse(repairJSON(slice)); } catch(_3) {}
+      }
     }
   }
   const os = text.indexOf('{'), oe = text.lastIndexOf('}');
@@ -656,7 +849,7 @@ function repairJSON(text) {
 
 
 // ─── DETAIL PANEL ────────────────────────────────────────────────
-const _diagData = {}; // stores {nodes, edges, showVerdicts} per containerId
+const _diagData = {};
 
 function showNodeDetail(containerId, nodeId) {
   const data = _diagData[containerId];
@@ -664,7 +857,6 @@ function showNodeDetail(containerId, nodeId) {
   const node = data.nodes.find(n => String(n.id) === String(nodeId));
   if (!node) return;
 
-  // Also find extracted/classified step data for this node
   const stepData = (state.extractedSteps || []).find(s => String(s.step_number) === String(nodeId));
   const classData = (state.classifiedSteps || []).find(s => String(s.step_number) === String(nodeId));
   const verdictData = (state.verdicts || []).find(v => String(v.step_number) === String(nodeId));
@@ -710,7 +902,7 @@ function showNodeDetail(containerId, nodeId) {
     if (stepData.stated_problems && stepData.stated_problems.length) {
       html += `<div class="rounded-md bg-red-50 border border-red-100 px-3 py-2 mb-3">
         <p class="text-[10px] font-semibold text-red-500 uppercase tracking-wide mb-1">Known Problems</p>
-        <ul class="space-y-0.5">${stepData.stated_problems.map(p => `<li class="text-xs text-red-700">• ${esc(p)}</li>`).join('')}</ul>
+        <ul class="space-y-0.5">${stepData.stated_problems.map(p => `<li class="text-xs text-red-700">\u2022 ${esc(p)}</li>`).join('')}</ul>
       </div>`;
     }
   }
@@ -722,7 +914,7 @@ function showNodeDetail(containerId, nodeId) {
     if (classData.failure_modes && classData.failure_modes.length) {
       html += `<div class="rounded-md bg-amber-50 border border-amber-100 px-3 py-2">
         <p class="text-[10px] font-semibold text-amber-600 uppercase tracking-wide mb-1">Failure Modes</p>
-        <ul class="space-y-0.5">${classData.failure_modes.map(f => `<li class="text-xs text-amber-800">• ${esc(f)}</li>`).join('')}</ul>
+        <ul class="space-y-0.5">${classData.failure_modes.map(f => `<li class="text-xs text-amber-800">\u2022 ${esc(f)}</li>`).join('')}</ul>
       </div>`;
     }
     html += `</div>`;
@@ -746,8 +938,6 @@ function showNodeDetail(containerId, nodeId) {
 
   const panel = document.getElementById('detail-' + containerId.replace('diagram-',''));
   if (panel) { panel.innerHTML = html; panel.classList.remove('hidden'); }
-
-  // Highlight selected node
   highlightNode(containerId, nodeId);
 }
 
@@ -787,7 +977,6 @@ function closeDetail(containerId) {
   const panelKey = containerId.replace('diagram-','');
   const panel = document.getElementById('detail-' + panelKey);
   if (panel) { panel.innerHTML = ''; panel.classList.add('hidden'); }
-  // Remove highlight
   const svg = document.querySelector('#' + containerId + ' svg');
   if (svg) svg.querySelectorAll('.node-selected').forEach(el => el.classList.remove('node-selected'));
 }
@@ -799,7 +988,6 @@ function highlightNode(containerId, nodeId) {
   const g = svg.querySelector(`[data-node="${nodeId}"]`);
   if (g) {
     g.classList.add('node-selected');
-    // Boost the shadow/outline of selected rect or polygon
     const shape = g.querySelector('rect,polygon');
     if (shape) {
       shape.setAttribute('stroke-width', '2.5');
@@ -819,7 +1007,6 @@ function renderFlowDiagram(containerId, graphData, showVerdicts) {
   const edges = graphData.edges || [];
   if (!nodes.length) { container.innerHTML = '<p class="text-sm text-gray-400">No nodes to render.</p>'; return; }
 
-  // Store data for click handlers
   _diagData[containerId] = { nodes, edges, showVerdicts };
 
   const NODE_W = 190;
@@ -836,7 +1023,6 @@ function renderFlowDiagram(containerId, graphData, showVerdicts) {
   };
   const SE_STYLE = { fill: '#4f46e5', stroke: '#3730a3', text: '#ffffff' };
 
-  // BFS level assignment
   const inDeg = {}, outMap = {};
   nodes.forEach(n => { inDeg[n.id] = 0; outMap[n.id] = []; });
   edges.forEach(e => {
@@ -888,7 +1074,6 @@ function renderFlowDiagram(containerId, graphData, showVerdicts) {
 </defs>
 <rect width="${svgW}" height="${svgH}" fill="#f8fafc" rx="8"/>`;
 
-  // ── Edges (clickable) ──
   edges.forEach(e => {
     const f = pos[e.from], t = pos[e.to];
     if (!f || !t) return;
@@ -900,7 +1085,6 @@ function renderFlowDiagram(containerId, graphData, showVerdicts) {
       ? `M${x1} ${y1} L${x2} ${y2 - 8}`
       : `M${x1} ${y1} C${x1} ${my},${x2} ${my},${x2} ${y2 - 8}`;
 
-    // Invisible thick hit area + visible line
     svg += `<g onclick="showEdgeDetail('${containerId}','${e.from}','${e.to}')" style="cursor:pointer">
       <path d="${d}" fill="none" stroke="transparent" stroke-width="12"/>
       <path d="${d}" fill="none" stroke="#cbd5e1" stroke-width="1.5" marker-end="url(#arr-${uid})" class="edge-line"/>
@@ -913,7 +1097,6 @@ function renderFlowDiagram(containerId, graphData, showVerdicts) {
     }
   });
 
-  // ── Nodes (clickable) ──
   nodes.forEach(n => {
     const p = pos[n.id];
     if (!p) return;
@@ -959,7 +1142,6 @@ function renderFlowDiagram(containerId, graphData, showVerdicts) {
         svg += `<text x="${p.x+NODE_W-bw/2-5}" y="${p.y+14}" text-anchor="middle" font-size="7.5" font-weight="700" fill="white" letter-spacing="0.05em">${bl}</text>`;
       }
 
-      // Click hint dot (bottom-right corner)
       svg += `<circle cx="${p.x+NODE_W-8}" cy="${p.y+NODE_H-8}" r="3" fill="${vs.stroke}" opacity="0.3"/>`;
     }
 
@@ -971,10 +1153,9 @@ function renderFlowDiagram(containerId, graphData, showVerdicts) {
 }
 
 
-function trunc(s, max) { if (!s) return ''; return s.length > max ? s.slice(0, max-1) + '…' : s; }
+function trunc(s, max) { if (!s) return ''; return s.length > max ? s.slice(0, max-1) + '\u2026' : s; }
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-// helper to call diagram agents (returns parsed graph JSON)
 async function callDiagramAgent(agent, inputText) {
   const raw = await callInvoke(agent, inputText, 2000);
   return safeParseJSON(raw);
@@ -984,67 +1165,47 @@ async function callDiagramAgent(agent, inputText) {
 // ─── PIPELINE ────────────────────────────────────────────────────
 async function runPipeline() {
   try {
-    // ── AGENT 2: EXTRACT ──────────────────────────────────────────
-    logProc('▸ Agent 2: Extracting process steps...');
+    logProc('Mapping your workflow…', 'Reading through your interview');
     setPipe(2);
     const rawExtracted = await callInvoke('extractor', 'Transcript:\n' + state.transcript, 4000);
-    logProc('  · Response: ' + rawExtracted.length + ' chars');
     state.extractedSteps = safeParseJSON(rawExtracted);
-    logProc('  ✓ Extracted ' + state.extractedSteps.length + ' steps');
 
-    // ── AGENT DIAGRAM (as-is) ─────────────────────────────────────
-    logProc('▸ Diagram Agent: Generating as-is flow diagram...');
+    logProc('Building your process map…', 'Visualising each step');
     state.diagramAsIs = await callDiagramAgent('diagram-as-is', 'Steps: ' + JSON.stringify(state.extractedSteps));
-    logProc('  ✓ As-is diagram ready');
 
-    // ── Show verify phase ─────────────────────────────────────────
-    logProc('  → Showing process diagram for verification...');
-    const procCard = document.querySelector('#phase-processing .bg-white');
-    if (procCard) procCard.style.display = 'none';
     showPhase('verify');
     setPipe(3);
     renderFlowDiagram('diagram-as-is', state.diagramAsIs, false);
 
   } catch(e) {
-    const dot = document.getElementById('proc-dot');
-    if (dot) {
-      dot.outerHTML = '<svg class="h-5 w-5 text-red-500 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" /></svg>';
-    }
-    logProc('✗ Error: ' + e.message);
-    logProc('  (open browser console for details)');
-    document.getElementById('proc-text').textContent = 'Error — see log above';
+    showProcError(e);
     console.error('Pipeline error:', e);
   }
 }
 
+function showProcError(e) {
+  const dot = document.getElementById('proc-dot');
+  if (dot) dot.innerHTML = '<span class="relative inline-flex h-12 w-12 rounded-full bg-red-100 items-center justify-center"><svg class="h-6 w-6 text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" /></svg></span>';
+  logProc('Something went wrong', e.message);
+}
+
 async function proceedToAnalysis() {
-  // Reset processing panel visibility
   showPhase('processing');
-  const procCard = document.querySelector('#phase-processing .bg-white');
-  if (procCard) procCard.style.display = '';
 
   try {
-    // ── AGENT 3: CLASSIFY ────────────────────────────────────────
-    logProc('▸ Agent 3: Classifying steps...');
+    logProc('Identifying bottlenecks…', 'Looking for friction and failure points');
     setPipe(3);
     const rawClassified = await callInvoke('classifier',
       'Steps: ' + JSON.stringify(state.extractedSteps) + '\n\nContext:\nCurrent weekly volume: ' + state.weeklyVolume + '\nBusiness type: ' + state.businessType, 6000);
-    logProc('  · Response: ' + rawClassified.length + ' chars');
     state.classifiedSteps = safeParseJSON(rawClassified);
-    logProc('  ✓ Classification complete — ' + state.classifiedSteps.length + ' steps');
 
-    // ── AGENT 4: EVALUATE ────────────────────────────────────────
-    logProc('▸ Agent 4: Evaluating and prioritizing improvements...');
+    logProc('Calculating improvements…', 'Estimating time savings and ROI');
     setPipe(4);
     const a4input = 'Classified steps: ' + JSON.stringify(state.classifiedSteps) + '\n\nContext:\nCurrent weekly volume: ' + state.weeklyVolume + '\nBusiness type: ' + state.businessType;
-    logProc('  · Input: ' + a4input.length + ' chars');
     const rawVerdicts = await callInvoke('evaluator', a4input, 8000);
-    logProc('  · Response: ' + rawVerdicts.length + ' chars');
     state.verdicts = safeParseJSON(rawVerdicts);
-    logProc('  ✓ Evaluation complete — ' + state.verdicts.length + ' verdicts');
 
-    // ── AGENT DIAGRAM (improved) ─────────────────────────────────
-    logProc('▸ Diagram Agent: Generating improved flow diagram...');
+    logProc('Creating your improved workflow…', 'Mapping out the optimised process');
     setPipe(5);
     const mergedSteps = state.verdicts.map((v, i) => ({
       ...(state.classifiedSteps[i] || {}),
@@ -1052,20 +1213,15 @@ async function proceedToAnalysis() {
       recommendation: v.recommendation
     }));
     state.diagramImproved = await callDiagramAgent('diagram-improved', 'Steps with verdicts: ' + JSON.stringify(mergedSteps));
-    logProc('  ✓ Improved diagram ready');
 
-    // ── AGENT 5: REPORT ──────────────────────────────────────────
-    logProc('▸ Agent 5: Writing operational assessment report...');
+    logProc('Writing your report…', 'Almost done');
     const a5input = 'Verdicts: ' + JSON.stringify(state.verdicts) + '\nOriginal steps: ' + JSON.stringify(state.extractedSteps) +
       '\n\nContext:\nBusiness type: ' + state.businessType + '\nWeekly volume: ' + state.weeklyVolume + '\nChannels: ' + state.channels;
     const report = await callInvoke('synthesizer', a5input, 4000);
     state.report = report;
-    logProc('  ✓ Report ready');
 
     setPipe(6);
-    const dot = document.getElementById('proc-dot');
-    if (dot) dot.outerHTML = '<svg class="h-5 w-5 text-green-500 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>';
-    document.getElementById('proc-text').textContent = 'Complete';
+    logProc('Your report is ready', '');
 
     setTimeout(async () => {
       showPhase('report');
@@ -1076,11 +1232,7 @@ async function proceedToAnalysis() {
     }, 400);
 
   } catch(e) {
-    const dot = document.getElementById('proc-dot');
-    if (dot) dot.outerHTML = '<svg class="h-5 w-5 text-red-500 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" /></svg>';
-    logProc('✗ Error: ' + e.message);
-    logProc('  (open browser console for details)');
-    document.getElementById('proc-text').textContent = 'Error — see log above';
+    showProcError(e);
     console.error('Pipeline error:', e);
   }
 }
@@ -1088,7 +1240,7 @@ async function proceedToAnalysis() {
 function showToast(msg) {
   const t = document.createElement('div');
   t.textContent = msg;
-  t.className = 'fixed bottom-4 right-4 bg-gray-900 text-white text-xs font-medium px-3 py-2 rounded-md shadow-lg fade-in z-50';
+  t.className = 'fixed bottom-4 right-4 bg-gray-900 text-white text-xs font-medium px-4 py-2.5 rounded-xl shadow-lg fade-in z-50';
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 3000);
 }
@@ -1130,7 +1282,7 @@ async function downloadPDF(event) {
   const btn = event.target.closest('button');
   const origHTML = btn.innerHTML;
   btn.disabled = true;
-  btn.innerHTML = '<svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Generating…';
+  btn.innerHTML = '<svg class="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Generating\u2026';
   try {
     const diagramAsIs = document.querySelector('#diagram-as-is svg')?.outerHTML || '';
     const diagramImproved = document.querySelector('#diagram-improved svg')?.outerHTML || '';
@@ -1166,15 +1318,14 @@ function resetApp() {
   document.getElementById('chat-area').innerHTML = '';
   document.getElementById('processing-log').textContent = '';
   document.getElementById('progress').style.width = '0%';
-  document.getElementById('progress-pct').textContent = '0%';
   const pm = document.getElementById('progress-m');
   if (pm) pm.style.width = '0%';
   const pt = document.getElementById('paste-transcript');
   if (pt) pt.value = '';
   document.getElementById('paste-mode').classList.add('hidden');
   setPipe(0);
+  showWizStep(0);
   showPhase('setup');
-  // Clear diagrams
   ['diagram-as-is','diagram-improved'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = ''; });
 }
 
@@ -1241,7 +1392,7 @@ function startRecording() {
   };
 
   recognition.onend = () => {
-    if (isRecording) recognition.start(); // keep going until user stops
+    if (isRecording) recognition.start();
   };
 
   recognition.start();
@@ -1260,8 +1411,7 @@ function stopRecording() {
   btn.querySelector('svg').style.color = '';
   btn.querySelector('svg').style.animation = '';
   btn.title = 'Click to speak';
-  input.placeholder = 'Describe what happens...';
-  // Auto-send if something was captured
+  input.placeholder = 'Describe what happens next...';
   if (input.value.trim()) sendMessage();
 }
 
