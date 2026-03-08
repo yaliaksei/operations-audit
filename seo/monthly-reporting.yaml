@@ -1,7 +1,8 @@
-title: "Monthly Reporting Process Audit — Fractional COO"
+title: "Monthly Reporting Audit for Small Business — Free AI Tool"
 meta_description: "Audit your monthly reporting process with AI. Cut the time spent pulling data, reformatting spreadsheets, and chasing numbers that should already exist."
 h1: "Cut the time you spend on monthly reports in half"
 subtitle: "Monthly reports shouldn't take two days. If your numbers live in five places and the formatting starts from scratch every month, the process is the problem — not the data."
+problems_intro: "Reporting shouldn't be the bottleneck in a decision cycle. Here's what the process looks like in small businesses when it's costing more time than it should."
 pain_points:
   - "Data is pulled manually from accounting, CRM, and spreadsheets — every month"
   - "Formatting and layout takes hours because there's no locked template"
@@ -9,3 +10,8 @@ pain_points:
   - "Numbers sometimes contradict across departments because sources differ"
 process_label: "monthly reporting"
 cta_text: "Audit your reporting process — free"
+related:
+  - label: "Invoice & Collections"
+    slug: invoice-collections
+  - label: "Support Triage"
+    slug: support-triage

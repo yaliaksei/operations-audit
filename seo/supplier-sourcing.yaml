@@ -1,11 +1,17 @@
-title: "Supplier Sourcing Process Audit — Fractional COO"
+title: "Supplier Sourcing Audit for Small Business — Free AI Tool"
 meta_description: "Audit your supplier sourcing process with AI. Find the back-and-forth, unclear pricing, and slow approvals that make sourcing take longer than it should."
 h1: "Source better suppliers without the back-and-forth"
 subtitle: "Supplier quality directly affects what your customers receive. A sourcing process that relies on relationships, memory, and ad-hoc emails creates unpredictable costs and quality."
+problems_intro: "Sourcing quality sets the ceiling for everything downstream. These are the signs a small business sourcing process is informal enough to create real operational risk."
 pain_points:
   - "No standard RFQ template — every sourcing request starts from scratch"
   - "Vendor comparison is informal, so the cheapest option often wins by default"
   - "Approval for new suppliers takes weeks because the path isn't defined"
-  - "Pricing agreements live in email threads, not a centralised document"
+  - "Pricing agreements live in email threads, not a centralized document"
 process_label: "supplier sourcing"
 cta_text: "Audit your sourcing process — free"
+related:
+  - label: "Inventory Ordering"
+    slug: inventory-ordering
+  - label: "Contractor Compliance"
+    slug: contractor-compliance

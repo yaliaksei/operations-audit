@@ -1,7 +1,8 @@
-title: "Invoice & Collections Process Audit — Fractional COO"
+title: "Invoice & Collections Audit for Small Business — Free AI Tool"
 meta_description: "Audit your invoicing and collections process with AI. Identify what's delaying payments, causing cash-flow surprises, and eating your admin time — free."
 h1: "Get paid faster without chasing every invoice"
 subtitle: "Late payments aren't always the client's fault. Often the process itself delays invoicing, obscures due dates, and makes it easy for clients to ignore you."
+problems_intro: "Cash flow problems rarely start with clients refusing to pay. More often, the process itself creates the delays. Here's what a broken invoicing workflow looks like in small businesses."
 pain_points:
   - "Invoices go out days after work is complete because billing is a manual afterthought"
   - "No automatic follow-up — chasing falls to whoever remembers"
@@ -9,3 +10,8 @@ pain_points:
   - "You find out cash is tight when the bank balance surprises you, not before"
 process_label: "invoicing and collections"
 cta_text: "Audit your invoicing process — free"
+related:
+  - label: "Quote & Proposal"
+    slug: quote-proposal
+  - label: "Monthly Reporting"
+    slug: monthly-reporting

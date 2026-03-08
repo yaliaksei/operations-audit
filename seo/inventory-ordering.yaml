@@ -1,7 +1,8 @@
-title: "Inventory Ordering Process Audit — Fractional COO"
+title: "Inventory Ordering Audit for Small Business — Free AI Tool"
 meta_description: "Audit your inventory ordering process with AI. Fix stockouts, over-ordering, and missed reorder points before they slow down your operations."
 h1: "Order the right stock at the right time"
 subtitle: "Stockouts stall jobs and frustrate customers. Over-ordering ties up cash and fills storage. The right process eliminates both — without someone watching inventory full-time."
+problems_intro: "Inventory problems are often invisible until they stop a job mid-way through. These are the patterns that signal a reactive ordering process in need of a fix."
 pain_points:
   - "Stockouts are discovered mid-job, causing delays and emergency shipping costs"
   - "Over-ordering happens because nobody trusts the count in the system"
@@ -9,3 +10,8 @@ pain_points:
   - "Vendor lead times aren't tracked, so orders go out too late"
 process_label: "inventory ordering"
 cta_text: "Audit your ordering process — free"
+related:
+  - label: "Supplier Sourcing"
+    slug: supplier-sourcing
+  - label: "Job Scheduling"
+    slug: job-scheduling

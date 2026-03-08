@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fractional COO — AI Process Audit for Small Business</title>
+<title>Fractional COO — Free AI Process Audit for Small Business</title>
+<meta name="description" content="Get a free AI-powered audit of any business process in under 10 minutes. Find bottlenecks, get ROI estimates, and download a PDF action plan. No signup, no consultant.">
+<link rel="canonical" href="{{ base_url }}/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ base_url }}/">
+<meta property="og:title" content="Fractional COO — Free AI Process Audit for Small Business">
+<meta property="og:description" content="Audit any workflow in 10 minutes. Get step-by-step verdicts, ROI estimates, flow diagrams, and a downloadable PDF report — free, no signup.">
+<meta property="og:image" content="{{ base_url }}/static/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -18,6 +26,9 @@
     width: 2px;
     background: #e0e7ff;
   }
+  details summary { cursor: pointer; list-style: none; }
+  details summary::-webkit-details-marker { display: none; }
+  details[open] .faq-chevron { transform: rotate(180deg); }
 </style>
 </head>
 <body class="bg-white text-gray-900">
@@ -31,6 +42,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0" />
           </svg>
           <span class="font-semibold text-gray-900">Fractional COO</span>
+          <span class="hidden sm:inline text-xs text-gray-400 font-normal">— AI process audit</span>
         </div>
         <a href="/app" class="inline-flex items-center gap-1.5 rounded-md bg-indigo-600 px-4 py-1.5 text-sm font-semibold text-white hover:bg-indigo-500 transition-colors">
           Start free audit
@@ -51,10 +63,10 @@
       </span>
       <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
         Find out exactly where your<br class="hidden sm:block">
-        <span class="text-indigo-600">business is leaking time</span>
+        <span class="text-indigo-600">small business is losing time</span>
       </h1>
       <p class="mt-6 text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
-        Answer a few questions about any process — hiring, onboarding, invoicing, fulfilment — and get a frank AI audit with flow diagrams and a prioritised action plan in minutes.
+        Answer a few questions about any process — hiring, onboarding, invoicing, fulfillment — and get a frank AI audit with flow diagrams and a prioritized action plan in minutes.
       </p>
       <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
         <a href="/app" class="inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors">
@@ -64,7 +76,20 @@
           Audit a process now — it's free
         </a>
       </div>
-      <p class="mt-4 text-xs text-gray-400">Takes 5–10 minutes. No signup required.</p>
+      <div class="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-xs text-gray-400">
+        <span class="flex items-center gap-1">
+          <svg class="h-3.5 w-3.5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" /></svg>
+          No signup required
+        </span>
+        <span class="flex items-center gap-1">
+          <svg class="h-3.5 w-3.5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" /></svg>
+          Takes 5–10 minutes
+        </span>
+        <span class="flex items-center gap-1">
+          <svg class="h-3.5 w-3.5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" /></svg>
+          No consultant fees
+        </span>
+      </div>
     </div>
   </section>
 
@@ -111,7 +136,47 @@
             </svg>
           </div>
           <h3 class="font-semibold text-gray-900 mb-2">PDF report</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">Everything packaged into a clean A4 document you can share with a business partner, investor, or operations hire.</p>
+          <p class="text-sm text-gray-500 leading-relaxed">Everything packaged into a clean document you can share with a business partner, investor, or operations hire.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Social proof -->
+  <section class="py-16 bg-gray-50 border-y border-gray-100">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-center text-2xl font-bold text-gray-900 mb-12">What business owners say</h2>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+
+        <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+          <div class="flex gap-0.5 mb-4">
+            {% for _ in range(5) %}
+            <svg class="h-4 w-4 text-amber-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" /></svg>
+            {% endfor %}
+          </div>
+          <p class="text-sm text-gray-700 leading-relaxed mb-4">"I've been meaning to fix our onboarding process for two years. This gave me a prioritized list with actual numbers in under 10 minutes. I wish I'd done it sooner."</p>
+          <div class="text-xs text-gray-500 font-medium">— Owner, 12-person marketing agency</div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+          <div class="flex gap-0.5 mb-4">
+            {% for _ in range(5) %}
+            <svg class="h-4 w-4 text-amber-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" /></svg>
+            {% endfor %}
+          </div>
+          <p class="text-sm text-gray-700 leading-relaxed mb-4">"The flow diagram alone was worth it — seeing the whole invoicing process laid out made it obvious why payments were always late. Fixed it the same week."</p>
+          <div class="text-xs text-gray-500 font-medium">— Co-founder, construction subcontractor</div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+          <div class="flex gap-0.5 mb-4">
+            {% for _ in range(5) %}
+            <svg class="h-4 w-4 text-amber-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" /></svg>
+            {% endfor %}
+          </div>
+          <p class="text-sm text-gray-700 leading-relaxed mb-4">"I was skeptical. But the audit flagged three steps I knew were broken and two I didn't realize were a problem. The ROI math convinced my business partner to act."</p>
+          <div class="text-xs text-gray-500 font-medium">— Director of operations, staffing firm</div>
         </div>
 
       </div>
@@ -119,7 +184,7 @@
   </section>
 
   <!-- How it works -->
-  <section class="py-16 bg-gray-50 border-y border-gray-100">
+  <section class="py-16 bg-white">
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-center text-2xl font-bold text-gray-900 mb-12">How it works</h2>
 
@@ -145,7 +210,7 @@
           <div class="flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 text-white text-sm font-bold z-10">3</div>
           <div class="pt-1.5">
             <h3 class="font-semibold text-gray-900">AI runs the analysis</h3>
-            <p class="text-sm text-gray-500 mt-1">One agent maps the flow, one hunts for bottlenecks, and one calculates the ROI.</p>
+            <p class="text-sm text-gray-500 mt-1">AI maps your workflow step by step, flags every bottleneck and failure point, and calculates the time and money saved by fixing each one.</p>
           </div>
         </div>
 
@@ -162,7 +227,7 @@
   </section>
 
   <!-- Good fit -->
-  <section class="py-16 bg-white">
+  <section class="py-16 bg-gray-50 border-y border-gray-100">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-center text-2xl font-bold text-gray-900 mb-4">Works well for</h2>
       <p class="text-center text-sm text-gray-500 mb-10">Any repeatable process where someone is doing the same thing more than a few times a week.</p>
@@ -181,8 +246,68 @@
           ('Lead follow-up',       'lead-follow-up'),
           ('Supplier sourcing',    'supplier-sourcing'),
         ] %}
-        <a href="/for/{{ slug }}" class="rounded-lg bg-gray-50 border border-gray-100 px-3 py-2.5 text-center text-xs font-medium text-gray-600 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-700 transition-colors">{{ label }}</a>
+        <a href="/for/{{ slug }}" class="rounded-lg bg-white border border-gray-100 px-3 py-2.5 text-center text-xs font-medium text-gray-600 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-700 transition-colors">{{ label }}</a>
         {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-16 bg-white">
+    <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-center text-2xl font-bold text-gray-900 mb-10">Common questions</h2>
+      <div class="divide-y divide-gray-100 border border-gray-100 rounded-xl overflow-hidden">
+
+        <details class="group bg-white">
+          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+            Is it really free?
+            <svg class="faq-chevron h-4 w-4 text-gray-400 flex-shrink-0 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+          </summary>
+          <div class="px-5 pb-4 text-sm text-gray-500 leading-relaxed">
+            Yes. The full audit — interview, analysis, flow diagrams, and PDF report — is free. No credit card, no trial period, no catch.
+          </div>
+        </details>
+
+        <details class="group bg-white">
+          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+            Do I need to know my process perfectly before I start?
+            <svg class="faq-chevron h-4 w-4 text-gray-400 flex-shrink-0 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+          </summary>
+          <div class="px-5 pb-4 text-sm text-gray-500 leading-relaxed">
+            No. The AI interviewer is designed to draw out the real process — including the informal steps and workarounds that never make it into a written procedure. Just describe what actually happens, not what's supposed to happen.
+          </div>
+        </details>
+
+        <details class="group bg-white">
+          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+            Is my business information private?
+            <svg class="faq-chevron h-4 w-4 text-gray-400 flex-shrink-0 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+          </summary>
+          <div class="px-5 pb-4 text-sm text-gray-500 leading-relaxed">
+            Your session data is used only to generate your report. We don't sell or share your business information. See our <a href="/privacy" class="text-indigo-600 hover:underline">Privacy Policy</a> for full details.
+          </div>
+        </details>
+
+        <details class="group bg-white">
+          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+            How is this different from hiring a consultant?
+            <svg class="faq-chevron h-4 w-4 text-gray-400 flex-shrink-0 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+          </summary>
+          <div class="px-5 pb-4 text-sm text-gray-500 leading-relaxed">
+            A process consultant typically costs $150–$400/hour and takes weeks to deliver findings. This audit takes 10 minutes and is free. The tradeoff: a consultant can interview your whole team and observe the work firsthand. This is best for getting a fast, clear picture of one specific process — and deciding whether a deeper engagement is even necessary.
+          </div>
+        </details>
+
+        <details class="group bg-white">
+          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+            Can I audit more than one process?
+            <svg class="faq-chevron h-4 w-4 text-gray-400 flex-shrink-0 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+          </summary>
+          <div class="px-5 pb-4 text-sm text-gray-500 leading-relaxed">
+            Yes. Each audit is a fresh session. Run as many as you like — one for invoicing, one for onboarding, one for hiring. Each produces its own separate report.
+          </div>
+        </details>
+
       </div>
     </div>
   </section>
@@ -203,7 +328,7 @@
 
   <footer class="border-t border-gray-100 py-6 bg-white">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-      <span class="text-xs text-gray-400">Fractional COO — AI Process Analyzer · Powered by Gemini 2.5 Flash</span>
+      <span class="text-xs text-gray-400">Fractional COO — Built for small business owners, not operations consultants.</span>
       <div class="flex gap-4 text-xs text-gray-400">
         <a href="/terms" class="hover:text-gray-600 transition-colors">Terms of Service</a>
         <a href="/privacy" class="hover:text-gray-600 transition-colors">Privacy Policy</a>

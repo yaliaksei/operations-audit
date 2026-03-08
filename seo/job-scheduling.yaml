@@ -1,7 +1,8 @@
-title: "Job Scheduling Process Audit — Fractional COO"
+title: "Job Scheduling Audit for Small Business — Free AI Tool"
 meta_description: "Audit your job scheduling process with AI. Fix double-bookings, last-minute changes, and staff confusion before they cost you clients."
 h1: "Eliminate scheduling chaos before it costs you clients"
 subtitle: "One double-booking, one crew that showed up to the wrong address, one client waiting three hours — and you're writing a refund. The schedule is where reputation is made."
+problems_intro: "Scheduling problems compound fast — one missed job creates a cascade of delays and unhappy clients. These are the friction points that field service businesses deal with daily."
 pain_points:
   - "Double-bookings happen because availability lives in someone's head"
   - "Staff find out about schedule changes via text message — sometimes too late"
@@ -9,3 +10,8 @@ pain_points:
   - "Rescheduling a job takes 15 minutes of back-and-forth that didn't need to happen"
 process_label: "job scheduling"
 cta_text: "Audit your scheduling process — free"
+related:
+  - label: "Contractor Compliance"
+    slug: contractor-compliance
+  - label: "Inventory Ordering"
+    slug: inventory-ordering

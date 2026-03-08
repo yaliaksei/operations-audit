@@ -1,7 +1,8 @@
-title: "Quote & Proposal Process Audit — Fractional COO"
+title: "Quote & Proposal Audit for Small Business — Free AI Tool"
 meta_description: "Audit your quoting and proposal process with AI. Find out why proposals take too long, go cold, and lose deals they should win."
 h1: "Send winning proposals faster"
 subtitle: "Speed matters more than polish. If your proposal arrives three days after the competitor's and looks like it was built from scratch, you've already lost on two fronts."
+problems_intro: "The window between interest and decision is short. These are the process failures that slow down proposals and quietly hand deals to faster-moving competitors."
 pain_points:
   - "Quotes take hours to build because there's no reusable template or pricing library"
   - "Pricing is inconsistent across salespeople for the same scope of work"
@@ -9,3 +10,8 @@ pain_points:
   - "Scope creep starts at the proposal stage because terms are left vague"
 process_label: "quoting and proposals"
 cta_text: "Audit your proposal process — free"
+related:
+  - label: "Invoice & Collections"
+    slug: invoice-collections
+  - label: "Lead Follow-up"
+    slug: lead-follow-up

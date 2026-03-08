@@ -1,7 +1,8 @@
-title: "Hiring & Screening Process Audit — Fractional COO"
+title: "Hiring & Screening Audit for Small Business — Free AI Tool"
 meta_description: "Audit your hiring and screening process with AI. Find where candidates drop off, why good hires take too long, and what's costing you great people."
 h1: "Hire better people in less time"
 subtitle: "Top candidates have options. If your hiring process is slow, inconsistent, or unresponsive, they take another offer before you've finished scheduling the second interview."
+problems_intro: "Small businesses lose great candidates to faster-moving competitors every day. These are the most common signs your hiring process is the bottleneck, not the candidate pool."
 pain_points:
   - "Screening is inconsistent — different interviewers evaluate different things"
   - "Response time is slow, so strong candidates ghost you for faster-moving companies"
@@ -9,3 +10,8 @@ pain_points:
   - "Offer letters take a week to write because there's no template"
 process_label: "hiring and screening"
 cta_text: "Audit your hiring process — free"
+related:
+  - label: "Client Onboarding"
+    slug: client-onboarding
+  - label: "Lead Follow-up"
+    slug: lead-follow-up

@@ -1,7 +1,8 @@
-title: "Support Triage Process Audit — Fractional COO"
+title: "Support Triage Audit for Small Business — Free AI Tool"
 meta_description: "Audit your support triage process with AI. Find the routing gaps, slow responses, and repeat issues driving customer churn."
 h1: "Resolve issues faster with fewer escalations"
 subtitle: "Customers don't churn loudly. They quietly stop responding after the third time they had to explain their problem to a new person. Triage quality determines retention."
+problems_intro: "Customer support problems compound quietly — each unresolved issue erodes a little more trust. These are the signs a small business support workflow is stretched past its limits."
 pain_points:
   - "No priority system means urgent issues wait behind low-stakes requests"
   - "First response is slow because tickets sit in a shared inbox nobody owns"
@@ -9,3 +10,8 @@ pain_points:
   - "Escalations happen by accident, not design — context gets lost in the transfer"
 process_label: "support triage"
 cta_text: "Audit your support process — free"
+related:
+  - label: "Client Onboarding"
+    slug: client-onboarding
+  - label: "Monthly Reporting"
+    slug: monthly-reporting
