@@ -212,6 +212,8 @@ def generate_pdf():
     try:
         from weasyprint import HTML
 
+        import re
+
         data = request.json
         diagram_asis = data.get("diagram_asis", "")
         diagram_improved = data.get("diagram_improved", "")
@@ -219,30 +221,51 @@ def generate_pdf():
         business_type = data.get("business_type", "")
         process_name = data.get("process_name", "")
 
+        def normalize_svg(svg):
+            """Strip fixed width/height so CSS can control the size."""
+            if not svg:
+                return svg
+            svg = re.sub(r'\s+width="[^"]*"', '', svg, count=1)
+            svg = re.sub(r'\s+height="[^"]*"', '', svg, count=1)
+            if 'preserveAspectRatio' not in svg:
+                svg = svg.replace('<svg', '<svg preserveAspectRatio="xMidYMid meet"', 1)
+            return svg
+
+        diagram_asis = normalize_svg(diagram_asis)
+        diagram_improved = normalize_svg(diagram_improved)
+
         html = f"""<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><style>
   @page {{ size: A4; margin: 1.5cm; }}
+  @page diagram {{ size: A4 landscape; margin: 1cm; }}
   body {{ font-family: DejaVu Sans, sans-serif; font-size: 10.5pt; line-height: 1.5; color: #1f2937; margin: 0; }}
   h1 {{ font-size: 18pt; color: #1e1b4b; margin: 0 0 4pt; }}
   .meta {{ color: #6b7280; font-size: 10pt; margin-bottom: 24pt; }}
-  h2 {{ font-size: 12pt; color: #4338ca; margin: 24pt 0 8pt; border-bottom: 1px solid #e0e7ff; padding-bottom: 4pt; }}
-  .diagram {{ margin: 8pt 0 16pt; page-break-inside: avoid; }}
-  .diagram svg {{ max-width: 100%; height: auto; display: block; }}
+  h2 {{ font-size: 12pt; color: #4338ca; margin: 0 0 8pt; border-bottom: 1px solid #e0e7ff; padding-bottom: 4pt; }}
+  .diagram-page {{ page: diagram; }}
+  .diagram-page svg {{ width: 100%; height: 190mm; display: block; }}
   pre {{ white-space: pre-wrap; font-family: DejaVu Sans Mono, monospace; font-size: 9pt;
          line-height: 1.6; background: #f9fafb; padding: 14pt; border-radius: 4pt;
          border: 1px solid #e5e7eb; margin: 0; }}
+  .report-section h2 {{ margin-top: 0; }}
 </style></head><body>
   <h1>Operational Assessment</h1>
   <div class="meta">{business_type}{' · ' + process_name if process_name else ''}</div>
 
-  <h2>Current Process Flow</h2>
-  <div class="diagram">{diagram_asis if diagram_asis else '<p style="color:#9ca3af">No diagram available.</p>'}</div>
+  <div class="diagram-page">
+    <h2>Current Process Flow</h2>
+    {diagram_asis if diagram_asis else '<p style="color:#9ca3af">No diagram available.</p>'}
+  </div>
 
-  <h2>Improved Process Flow</h2>
-  <div class="diagram">{diagram_improved if diagram_improved else '<p style="color:#9ca3af">No diagram available.</p>'}</div>
+  <div class="diagram-page">
+    <h2>Improved Process Flow</h2>
+    {diagram_improved if diagram_improved else '<p style="color:#9ca3af">No diagram available.</p>'}
+  </div>
 
-  <h2>Assessment Report</h2>
-  <pre>{report}</pre>
+  <div class="report-section">
+    <h2>Assessment Report</h2>
+    <pre>{report}</pre>
+  </div>
 </body></html>"""
 
         pdf = HTML(string=html).write_pdf()
