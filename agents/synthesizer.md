@@ -35,6 +35,7 @@ For non-Keep verdicts, add indented:
 → [Exact recommendation in one sentence]
 → Value: [quantified benefit]
 → Payback: [X weeks] — only for Automate or Replace verdicts
+→ ⚠️ Requires: [dependency_note] — only if depends_on is non-empty
 
 ─────────────────────────────
 5. QUICK WINS
@@ -68,5 +69,8 @@ Total setup time: W hours
 [action]
 ...
 Everything else: ignore until [trigger]."
+
+If any steps have depends_on relationships, group them under a "Do these together" callout before the action list:
+Do these together: [Step A] + [Step B] — [dependency_note in plain language]
 
 Tone rules: No filler phrases. No generic advice. Every sentence specific to this exact business. State one-time and ongoing costs explicitly. Maximum 2 printed pages.

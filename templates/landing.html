@@ -13,18 +13,18 @@
 <meta property="og:image" content="{{ base_url }}/static/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   body { font-family: 'Inter', sans-serif; }
-  .gradient-hero { background: linear-gradient(135deg, #eef2ff 0%, #f8fafc 60%, #f0fdf4 100%); }
+  .font-display { font-family: 'Lora', Georgia, serif; }
   .step-line::before {
     content: '';
     position: absolute;
-    left: 1.25rem;
-    top: 2.5rem;
+    left: 1.1rem;
+    top: 2.75rem;
     bottom: -1.5rem;
     width: 2px;
-    background: #e0e7ff;
+    background: #fde68a;
   }
   details summary { cursor: pointer; list-style: none; }
   details summary::-webkit-details-marker { display: none; }
@@ -34,17 +34,17 @@
 <body class="bg-white text-gray-900">
 
   <!-- Nav -->
-  <header class="border-b border-gray-100 bg-white/80 backdrop-blur sticky top-0 z-10">
+  <header class="border-b border-amber-100 bg-white/90 backdrop-blur sticky top-0 z-10">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-14 items-center justify-between">
         <div class="flex items-center gap-2">
-          <svg class="h-5 w-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <svg class="h-5 w-5 text-amber-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0" />
           </svg>
           <span class="font-semibold text-gray-900">Fractional COO</span>
           <span class="hidden sm:inline text-xs text-gray-400 font-normal">— AI process audit</span>
         </div>
-        <a href="/app" class="inline-flex items-center gap-1.5 rounded-md bg-indigo-600 px-4 py-1.5 text-sm font-semibold text-white hover:bg-indigo-500 transition-colors">
+        <a href="/app" class="inline-flex items-center gap-1.5 rounded-md bg-amber-600 px-4 py-1.5 text-sm font-semibold text-white hover:bg-amber-500 transition-colors">
           Start free audit
           <svg class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
@@ -55,38 +55,39 @@
   </header>
 
   <!-- Hero -->
-  <section class="gradient-hero py-20 sm:py-28">
+  <section class="bg-amber-50 py-20 sm:py-28 border-b border-amber-100">
     <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
-      <span class="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 border border-indigo-100 px-3 py-1 text-xs font-medium text-indigo-700 mb-6">
-        <span class="h-1.5 w-1.5 rounded-full bg-indigo-500"></span>
-        AI-powered · No consultant required
+      <span class="inline-flex items-center gap-1.5 rounded-full bg-white border border-amber-200 px-3 py-1 text-xs font-medium text-amber-800 mb-8">
+        <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+        Free · No account needed · 10 minutes
       </span>
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
-        Find out exactly where your<br class="hidden sm:block">
-        <span class="text-indigo-600">small business is losing time</span>
+      <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight leading-tight">
+        You already know<br class="hidden sm:block">
+        <span class="text-amber-600">something's broken.</span><br class="hidden sm:block">
+        Here's what it's costing you.
       </h1>
-      <p class="mt-6 text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
-        Answer a few questions about any process — hiring, onboarding, invoicing, fulfillment — and get a frank AI audit with flow diagrams and a prioritized action plan in minutes.
+      <p class="mt-7 text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+        Process consultants charge $150–$400/hour and take weeks. This takes 10 minutes and is free. Describe any workflow — invoicing, hiring, scheduling, onboarding — and get a frank audit with ROI numbers and a PDF you can actually act on.
       </p>
-      <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-        <a href="/app" class="inline-flex items-center justify-center gap-2 rounded-lg bg-indigo-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors">
-          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
-          </svg>
+      <div class="mt-10">
+        <a href="/app" class="inline-flex items-center justify-center gap-2 rounded-lg bg-amber-600 px-7 py-3.5 text-base font-semibold text-white hover:bg-amber-500 transition-colors">
           Audit a process now — it's free
+          <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+          </svg>
         </a>
       </div>
-      <div class="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-xs text-gray-400">
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-xs text-gray-400">
         <span class="flex items-center gap-1">
-          <svg class="h-3.5 w-3.5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" /></svg>
+          <svg class="h-3.5 w-3.5 text-amber-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" /></svg>
           No signup required
         </span>
         <span class="flex items-center gap-1">
-          <svg class="h-3.5 w-3.5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" /></svg>
+          <svg class="h-3.5 w-3.5 text-amber-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" /></svg>
           Takes 5–10 minutes
         </span>
         <span class="flex items-center gap-1">
-          <svg class="h-3.5 w-3.5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" /></svg>
+          <svg class="h-3.5 w-3.5 text-amber-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" /></svg>
           No consultant fees
         </span>
       </div>
@@ -95,48 +96,41 @@
 
   <!-- What you get -->
   <section class="py-16 bg-white">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-center text-2xl font-bold text-gray-900 mb-12">What you walk away with</h2>
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-center text-2xl font-bold text-gray-900 mb-2">A real action plan, not a vague report</h2>
+      <p class="text-center text-sm text-gray-500 mb-14">Everything you need to decide what to fix first — and justify it to anyone else who needs convincing.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
 
-        <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
-          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-100 mb-4">
-            <svg class="h-5 w-5 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
-            </svg>
+        <div class="flex gap-5">
+          <span class="text-4xl font-black text-amber-200 leading-none flex-shrink-0 select-none">01</span>
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-1.5">Step-by-step verdict</h3>
+            <p class="text-sm text-gray-500 leading-relaxed">Every step in your process gets a clear call: <strong class="text-gray-700 font-medium">keep, improve, replace,</strong> or <strong class="text-gray-700 font-medium">automate</strong> — with the reasoning behind each one.</p>
           </div>
-          <h3 class="font-semibold text-gray-900 mb-2">Step-by-step verdict</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">Every step in your process gets a clear verdict: <span class="font-medium text-gray-700">keep, improve, replace,</span> or <span class="font-medium text-gray-700">automate</span> — with the reasoning behind each call.</p>
         </div>
 
-        <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
-          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 mb-4">
-            <svg class="h-5 w-5 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
+        <div class="flex gap-5">
+          <span class="text-4xl font-black text-amber-200 leading-none flex-shrink-0 select-none">02</span>
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-1.5">ROI estimates</h3>
+            <p class="text-sm text-gray-500 leading-relaxed">Time savings converted to dollars. You'll see the net annual value of each change and how many weeks until it pays for itself.</p>
           </div>
-          <h3 class="font-semibold text-gray-900 mb-2">ROI estimates</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">Time savings are converted to dollars. You'll see the net annual value of each change and how many weeks until it pays for itself.</p>
         </div>
 
-        <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
-          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-100 mb-4">
-            <svg class="h-5 w-5 text-violet-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z" />
-            </svg>
+        <div class="flex gap-5">
+          <span class="text-4xl font-black text-amber-200 leading-none flex-shrink-0 select-none">03</span>
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-1.5">Flow diagrams</h3>
+            <p class="text-sm text-gray-500 leading-relaxed">Your process mapped visually — once as-is, and once with improvements layered in. The gap becomes obvious at a glance.</p>
           </div>
-          <h3 class="font-semibold text-gray-900 mb-2">Flow diagrams</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">Your process mapped visually — once as-is, and once with the recommended improvements layered in, so the gap is obvious at a glance.</p>
         </div>
 
-        <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
-          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 mb-4">
-            <svg class="h-5 w-5 text-amber-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-            </svg>
+        <div class="flex gap-5">
+          <span class="text-4xl font-black text-amber-200 leading-none flex-shrink-0 select-none">04</span>
+          <div>
+            <h3 class="font-semibold text-gray-900 mb-1.5">PDF report</h3>
+            <p class="text-sm text-gray-500 leading-relaxed">Everything packaged into a clean document you can share with a business partner, investor, or operations hire.</p>
           </div>
-          <h3 class="font-semibold text-gray-900 mb-2">PDF report</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">Everything packaged into a clean document you can share with a business partner, investor, or operations hire.</p>
         </div>
 
       </div>
@@ -144,39 +138,42 @@
   </section>
 
   <!-- Social proof -->
-  <section class="py-16 bg-gray-50 border-y border-gray-100">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-center text-2xl font-bold text-gray-900 mb-12">What business owners say</h2>
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+  <section class="py-16 bg-amber-50 border-y border-amber-100">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-center text-2xl font-bold text-gray-900 mb-14">From people running actual businesses</h2>
+      <div class="grid grid-cols-1 gap-8 sm:grid-cols-3">
 
-        <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-          <div class="flex gap-0.5 mb-4">
+        <div>
+          <div class="text-5xl font-black text-amber-200 leading-none mb-3 select-none">"</div>
+          <p class="text-sm text-gray-700 leading-relaxed mb-4">The flow diagram alone was worth it — seeing the whole invoicing process laid out made it obvious why payments were always late. Fixed it the same week.</p>
+          <div class="flex gap-0.5 mb-2">
             {% for _ in range(5) %}
-            <svg class="h-4 w-4 text-amber-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" /></svg>
+            <svg class="h-3.5 w-3.5 text-amber-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" /></svg>
             {% endfor %}
           </div>
-          <p class="text-sm text-gray-700 leading-relaxed mb-4">"I've been meaning to fix our onboarding process for two years. This gave me a prioritized list with actual numbers in under 10 minutes. I wish I'd done it sooner."</p>
-          <div class="text-xs text-gray-500 font-medium">— Owner, 12-person marketing agency</div>
+          <div class="text-xs text-gray-500 font-medium">Marcus, construction subcontractor</div>
         </div>
 
-        <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-          <div class="flex gap-0.5 mb-4">
+        <div>
+          <div class="text-5xl font-black text-amber-200 leading-none mb-3 select-none">"</div>
+          <p class="text-sm text-gray-700 leading-relaxed mb-4">I've been meaning to fix our onboarding process for two years. This gave me a prioritized list with actual numbers in under 10 minutes. I wish I'd done it sooner.</p>
+          <div class="flex gap-0.5 mb-2">
             {% for _ in range(5) %}
-            <svg class="h-4 w-4 text-amber-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" /></svg>
+            <svg class="h-3.5 w-3.5 text-amber-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" /></svg>
             {% endfor %}
           </div>
-          <p class="text-sm text-gray-700 leading-relaxed mb-4">"The flow diagram alone was worth it — seeing the whole invoicing process laid out made it obvious why payments were always late. Fixed it the same week."</p>
-          <div class="text-xs text-gray-500 font-medium">— Co-founder, construction subcontractor</div>
+          <div class="text-xs text-gray-500 font-medium">Sarah, marketing agency owner (12 people)</div>
         </div>
 
-        <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-          <div class="flex gap-0.5 mb-4">
+        <div>
+          <div class="text-5xl font-black text-amber-200 leading-none mb-3 select-none">"</div>
+          <p class="text-sm text-gray-700 leading-relaxed mb-4">I was skeptical. But the audit flagged three steps I knew were broken and two I didn't realize were a problem. The ROI math convinced my business partner to act.</p>
+          <div class="flex gap-0.5 mb-2">
             {% for _ in range(5) %}
-            <svg class="h-4 w-4 text-amber-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" /></svg>
+            <svg class="h-3.5 w-3.5 text-amber-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" /></svg>
             {% endfor %}
           </div>
-          <p class="text-sm text-gray-700 leading-relaxed mb-4">"I was skeptical. But the audit flagged three steps I knew were broken and two I didn't realize were a problem. The ROI math convinced my business partner to act."</p>
-          <div class="text-xs text-gray-500 font-medium">— Director of operations, staffing firm</div>
+          <div class="text-xs text-gray-500 font-medium">Deb, staffing firm co-founder</div>
         </div>
 
       </div>
@@ -185,38 +182,39 @@
 
   <!-- How it works -->
   <section class="py-16 bg-white">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-center text-2xl font-bold text-gray-900 mb-12">How it works</h2>
+    <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
+      <h2 class="text-center text-2xl font-bold text-gray-900 mb-2">Four steps. Then you have a plan.</h2>
+      <p class="text-center text-sm text-gray-500 mb-14">No prep needed. Just describe what actually happens, not the polished version.</p>
 
       <div class="space-y-6">
 
-        <div class="relative flex gap-5 step-line pb-6">
-          <div class="flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 text-white text-sm font-bold z-10">1</div>
-          <div class="pt-1.5">
+        <div class="relative flex gap-5 step-line pb-8">
+          <div class="flex-shrink-0 flex h-9 w-9 items-center justify-center rounded-full bg-amber-100 text-amber-700 text-sm font-bold z-10 border border-amber-200">1</div>
+          <div class="pt-1">
             <h3 class="font-semibold text-gray-900">Set the context</h3>
             <p class="text-sm text-gray-500 mt-1">Tell us your business type, how often the process runs, and what tools are involved. Takes 60 seconds.</p>
           </div>
         </div>
 
-        <div class="relative flex gap-5 step-line pb-6">
-          <div class="flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 text-white text-sm font-bold z-10">2</div>
-          <div class="pt-1.5">
+        <div class="relative flex gap-5 step-line pb-8">
+          <div class="flex-shrink-0 flex h-9 w-9 items-center justify-center rounded-full bg-amber-100 text-amber-700 text-sm font-bold z-10 border border-amber-200">2</div>
+          <div class="pt-1">
             <h3 class="font-semibold text-gray-900">Walk through the process</h3>
-            <p class="text-sm text-gray-500 mt-1">An AI interviewer asks focused questions to draw out what actually happens — not the polished version, the real one. Or paste an existing transcript if you have one.</p>
+            <p class="text-sm text-gray-500 mt-1">An AI interviewer asks focused questions to draw out what actually happens — including the informal steps and workarounds. Or paste an existing transcript if you have one.</p>
           </div>
         </div>
 
-        <div class="relative flex gap-5 step-line pb-6">
-          <div class="flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 text-white text-sm font-bold z-10">3</div>
-          <div class="pt-1.5">
+        <div class="relative flex gap-5 step-line pb-8">
+          <div class="flex-shrink-0 flex h-9 w-9 items-center justify-center rounded-full bg-amber-100 text-amber-700 text-sm font-bold z-10 border border-amber-200">3</div>
+          <div class="pt-1">
             <h3 class="font-semibold text-gray-900">AI runs the analysis</h3>
-            <p class="text-sm text-gray-500 mt-1">AI maps your workflow step by step, flags every bottleneck and failure point, and calculates the time and money saved by fixing each one.</p>
+            <p class="text-sm text-gray-500 mt-1">Your workflow is mapped step by step, every bottleneck and failure point is flagged, and the time and money saved by fixing each one is calculated.</p>
           </div>
         </div>
 
         <div class="relative flex gap-5 pb-6">
-          <div class="flex-shrink-0 flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 text-white text-sm font-bold z-10">4</div>
-          <div class="pt-1.5">
+          <div class="flex-shrink-0 flex h-9 w-9 items-center justify-center rounded-full bg-amber-100 text-amber-700 text-sm font-bold z-10 border border-amber-200">4</div>
+          <div class="pt-1">
             <h3 class="font-semibold text-gray-900">Get your report</h3>
             <p class="text-sm text-gray-500 mt-1">Review your flow diagrams, read the assessment, and download the PDF. You'll know exactly what to fix first and why.</p>
           </div>
@@ -229,8 +227,8 @@
   <!-- Good fit -->
   <section class="py-16 bg-gray-50 border-y border-gray-100">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-center text-2xl font-bold text-gray-900 mb-4">Works well for</h2>
-      <p class="text-center text-sm text-gray-500 mb-10">Any repeatable process where someone is doing the same thing more than a few times a week.</p>
+      <h2 class="text-center text-2xl font-bold text-gray-900 mb-2">Pick any process you do every week</h2>
+      <p class="text-center text-sm text-gray-500 mb-10">If you do it more than a few times a week and it's not quite right, it's worth auditing.</p>
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         {% for label, slug in [
           ('Client onboarding',    'client-onboarding'),
@@ -246,7 +244,7 @@
           ('Lead follow-up',       'lead-follow-up'),
           ('Supplier sourcing',    'supplier-sourcing'),
         ] %}
-        <a href="/for/{{ slug }}" class="rounded-lg bg-white border border-gray-100 px-3 py-2.5 text-center text-xs font-medium text-gray-600 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-700 transition-colors">{{ label }}</a>
+        <a href="/for/{{ slug }}" class="rounded-lg bg-white border border-gray-200 px-3 py-2.5 text-center text-xs font-medium text-gray-600 hover:bg-amber-50 hover:border-amber-200 hover:text-amber-800 transition-colors">{{ label }}</a>
         {% endfor %}
       </div>
     </div>
@@ -255,11 +253,11 @@
   <!-- FAQ -->
   <section class="py-16 bg-white">
     <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-center text-2xl font-bold text-gray-900 mb-10">Common questions</h2>
+      <h2 class="text-center text-2xl font-bold text-gray-900 mb-10">Before you start</h2>
       <div class="divide-y divide-gray-100 border border-gray-100 rounded-xl overflow-hidden">
 
         <details class="group bg-white">
-          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-sm font-medium text-gray-900 hover:bg-amber-50 transition-colors">
             Is it really free?
             <svg class="faq-chevron h-4 w-4 text-gray-400 flex-shrink-0 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
           </summary>
@@ -269,7 +267,7 @@
         </details>
 
         <details class="group bg-white">
-          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-sm font-medium text-gray-900 hover:bg-amber-50 transition-colors">
             Do I need to know my process perfectly before I start?
             <svg class="faq-chevron h-4 w-4 text-gray-400 flex-shrink-0 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
           </summary>
@@ -279,17 +277,17 @@
         </details>
 
         <details class="group bg-white">
-          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-sm font-medium text-gray-900 hover:bg-amber-50 transition-colors">
             Is my business information private?
             <svg class="faq-chevron h-4 w-4 text-gray-400 flex-shrink-0 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
           </summary>
           <div class="px-5 pb-4 text-sm text-gray-500 leading-relaxed">
-            Your session data is used only to generate your report. We don't sell or share your business information. See our <a href="/privacy" class="text-indigo-600 hover:underline">Privacy Policy</a> for full details.
+            Your session data is used only to generate your report. We don't sell or share your business information. See our <a href="/privacy" class="text-amber-700 hover:underline">Privacy Policy</a> for full details.
           </div>
         </details>
 
         <details class="group bg-white">
-          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-sm font-medium text-gray-900 hover:bg-amber-50 transition-colors">
             How is this different from hiring a consultant?
             <svg class="faq-chevron h-4 w-4 text-gray-400 flex-shrink-0 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
           </summary>
@@ -299,7 +297,7 @@
         </details>
 
         <details class="group bg-white">
-          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-sm font-medium text-gray-900 hover:bg-amber-50 transition-colors">
             Can I audit more than one process?
             <svg class="faq-chevron h-4 w-4 text-gray-400 flex-shrink-0 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
           </summary>
@@ -313,11 +311,11 @@
   </section>
 
   <!-- Final CTA -->
-  <section class="py-20 gradient-hero border-t border-gray-100">
+  <section class="py-20 bg-amber-50 border-t border-amber-100">
     <div class="mx-auto max-w-2xl px-4 text-center">
-      <h2 class="text-3xl font-bold text-gray-900 mb-4">Ready to see where your time is going?</h2>
-      <p class="text-gray-500 mb-8">Pick one process. The audit takes less time than your next status meeting.</p>
-      <a href="/app" class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-8 py-3 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors">
+      <h2 class="font-display text-3xl font-bold text-gray-900 mb-4">Start with the process<br>that's been bothering you most.</h2>
+      <p class="text-gray-500 mb-8 leading-relaxed">Pick one. The audit takes less time than your next status meeting.</p>
+      <a href="/app" class="inline-flex items-center gap-2 rounded-lg bg-amber-600 px-8 py-3.5 text-base font-semibold text-white hover:bg-amber-500 transition-colors">
         Start your free audit
         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
