@@ -20,6 +20,12 @@ load_dotenv()
 app = Flask(__name__)
 init_db()
 
+
+@app.context_processor
+def inject_gtm():
+    gtm_id = os.environ.get("GTM_ID", "")
+    return {"gtm_id": gtm_id}
+
 SEO_DIR = Path(__file__).parent / "seo"
 
 

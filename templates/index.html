@@ -83,8 +83,14 @@
   .pulse-ring { animation: pulseRing 2s cubic-bezier(0.4,0,0.6,1) infinite; }
   @keyframes pulseRing { 0%{box-shadow:0 0 0 0 rgba(217,119,6,0.3)} 70%{box-shadow:0 0 0 12px rgba(217,119,6,0)} 100%{box-shadow:0 0 0 0 rgba(217,119,6,0)} }
 </style>
+{% if gtm_id %}
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);})(window,document,"script","dataLayer","{{ gtm_id }}");</script>
+{% endif %}
 </head>
 <body class="gradient-bg">
+{% if gtm_id %}
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ gtm_id }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+{% endif %}
 
 <!-- Top nav -->
 <nav class="bg-white/80 backdrop-blur-md border-b border-gray-200/60 sticky top-0 z-20">
