@@ -34,7 +34,7 @@
   .modern-input {
     display: block; width: 100%; border-radius: 0.75rem;
     border: 1.5px solid #e2e8f0; padding: 0.75rem 1rem; padding-left: 2.75rem;
-    font-size: 0.95rem; color: #1e293b; background: white;
+    font-size: 1rem; color: #1e293b; background: white;
     transition: border-color 0.15s, box-shadow 0.15s;
     outline: none;
   }
@@ -129,11 +129,11 @@
         </svg>
       </div>
       <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Let's audit your process</h1>
-      <p class="text-gray-500 mt-3 text-base leading-relaxed max-w-md mx-auto">Answer a few quick questions, walk us through your workflow, and get an AI-powered assessment with diagrams and an action plan.</p>
+      <p class="text-gray-500 mt-3 text-lg leading-relaxed max-w-md mx-auto">Answer a few quick questions, walk us through your workflow, and get an AI-powered assessment with diagrams and an action plan.</p>
     </div>
 
     <div class="glass-card rounded-2xl p-6 sm:p-8">
-      <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Your email</label>
+      <label for="email" class="block text-base font-semibold text-gray-700 mb-2">Your email</label>
       <div class="relative mb-4">
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
           <svg class="h-4.5 w-4.5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -171,7 +171,7 @@
 
     <div class="glass-card rounded-2xl p-6 sm:p-8 space-y-5">
       <div>
-        <label for="business-type" class="block text-sm font-semibold text-gray-700 mb-2">Business type</label>
+        <label for="business-type" class="block text-base font-semibold text-gray-700 mb-2">Business type</label>
         <div class="relative">
           <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
             <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -184,7 +184,7 @@
       </div>
 
       <div>
-        <label for="process-name" class="block text-sm font-semibold text-gray-700 mb-2">Process to analyze</label>
+        <label for="process-name" class="block text-base font-semibold text-gray-700 mb-2">Process to analyze</label>
         <div class="relative">
           <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
             <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -229,7 +229,7 @@
 
     <div class="glass-card rounded-2xl p-6 sm:p-8 space-y-5">
       <div>
-        <label for="weekly-volume" class="block text-sm font-semibold text-gray-700 mb-2">Weekly volume</label>
+        <label for="weekly-volume" class="block text-base font-semibold text-gray-700 mb-2">Weekly volume</label>
         <div class="relative">
           <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
             <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -242,7 +242,7 @@
       </div>
 
       <div>
-        <label for="labor-rate" class="block text-sm font-semibold text-gray-700 mb-2">Labor rate <span class="font-normal text-gray-400">($/hr — used for ROI estimates)</span></label>
+        <label for="labor-rate" class="block text-base font-semibold text-gray-700 mb-2">Labor rate <span class="font-normal text-gray-400">($/hr — used for ROI estimates)</span></label>
         <div class="relative">
           <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
             <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -255,7 +255,7 @@
       </div>
 
       <div>
-        <label for="channels" class="block text-sm font-semibold text-gray-700 mb-2">Tools &amp; channels</label>
+        <label for="channels" class="block text-base font-semibold text-gray-700 mb-2">Tools &amp; channels</label>
         <div class="relative">
           <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
             <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -397,7 +397,7 @@
       <!-- ── INTERVIEW ── -->
       <div id="phase-interview" class="hidden phase-panel">
         <div class="mb-6">
-          <h1 class="text-xl font-bold text-gray-900">Interview</h1>
+          <h1 class="text-2xl font-bold text-gray-900">Interview</h1>
           <p class="mt-1 text-sm text-gray-500">Walk us through your process step by step. Click <strong class="font-medium text-gray-700">Finish</strong> when done.</p>
         </div>
 
@@ -413,7 +413,7 @@
           <div class="border-t border-gray-200/60 p-3 flex gap-2 bg-white/60 backdrop-blur-sm">
             <input id="user-input" type="text" placeholder="Describe what happens next..."
               onkeydown="if(event.key==='Enter') sendMessage()"
-              class="block flex-1 rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-amber-500 focus:ring-2 focus:ring-amber-100 outline-none bg-white" />
+              class="block flex-1 rounded-xl border border-gray-200 px-4 py-2.5 text-base text-gray-900 placeholder-gray-400 focus:border-amber-500 focus:ring-2 focus:ring-amber-100 outline-none bg-white" />
             <button id="mic-btn" onclick="toggleMic()" title="Click to speak"
               class="inline-flex items-center justify-center rounded-xl bg-white px-3 py-2.5 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition-colors">
               <svg id="mic-icon" class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -441,7 +441,7 @@
       <!-- ── PROCESSING ── -->
       <div id="phase-processing" class="hidden phase-panel">
         <div class="mb-6">
-          <h1 class="text-xl font-bold text-gray-900">Analysing your workflow</h1>
+          <h1 class="text-2xl font-bold text-gray-900">Analysing your workflow</h1>
           <p class="mt-1 text-sm text-gray-500">This usually takes about a minute.</p>
         </div>
 
@@ -470,7 +470,7 @@
       <!-- ── VERIFY DIAGRAM ── -->
       <div id="phase-verify" class="hidden phase-panel">
         <div class="mb-6">
-          <h1 class="text-xl font-bold text-gray-900">Verify Process Flow</h1>
+          <h1 class="text-2xl font-bold text-gray-900">Verify Process Flow</h1>
           <p class="mt-1 text-sm text-gray-500">Review the diagram. If it looks right, continue. If something's off, start over.</p>
         </div>
 
@@ -509,7 +509,7 @@
       <div id="phase-report" class="hidden phase-panel">
         <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
           <div>
-            <h1 class="text-xl font-bold text-gray-900">Operational Assessment</h1>
+            <h1 class="text-2xl font-bold text-gray-900">Operational Assessment</h1>
             <p class="mt-1 text-sm text-gray-500">Your process has been analyzed.</p>
           </div>
           <div class="flex gap-2 flex-wrap">
@@ -560,7 +560,7 @@
         </div>
 
         <div class="glass-card rounded-2xl p-6">
-          <pre id="final-report" class="text-sm text-gray-800 leading-7 whitespace-pre-wrap font-sans"></pre>
+          <pre id="final-report" class="text-base text-gray-800 leading-7 whitespace-pre-wrap font-sans"></pre>
         </div>
       </div>
 
@@ -572,6 +572,7 @@
 const state = {
   phase: 0, businessType: '', weeklyVolume: '', processName: '', channels: '', email: '', laborRate: '',
   chatHistory: [], transcript: '', extractedSteps: null,
+  statedFailures: [], extractedContext: null,
   classifiedSteps: null, verdicts: null, report: ''
 };
 
@@ -759,8 +760,8 @@ function appendMessage(role, text, streaming = false) {
       ${isAgent ? 'AI' : 'You'}
     </div>
     <div class="max-w-[80%]">
-      <div class="text-[11px] font-medium mb-1 ${isAgent ? 'text-amber-500' : 'text-gray-400 text-right'}">${isAgent ? 'Interviewer' : 'You'}</div>
-      <div class="${isAgent ? 'chat-bubble-agent' : 'chat-bubble-user'} px-4 py-3 text-sm text-gray-700 leading-relaxed ${streaming ? 'streaming' : ''}" id="msg-${Date.now()}">${escHtml(text)}</div>
+      <div class="text-xs font-medium mb-1 ${isAgent ? 'text-amber-500' : 'text-gray-400 text-right'}">${isAgent ? 'Interviewer' : 'You'}</div>
+      <div class="${isAgent ? 'chat-bubble-agent' : 'chat-bubble-user'} px-4 py-3 text-base text-gray-700 leading-relaxed ${streaming ? 'streaming' : ''}" id="msg-${Date.now()}">${escHtml(text)}</div>
     </div>`;
 
   area.appendChild(wrap);
@@ -1182,7 +1183,17 @@ async function runPipeline() {
     logProc('Mapping your workflow…', 'Reading through your interview');
     setPipe(2);
     const rawExtracted = await callInvoke('extractor', 'Transcript:\n' + state.transcript, 4000);
-    state.extractedSteps = safeParseJSON(rawExtracted);
+    const extractorResult = safeParseJSON(rawExtracted);
+    // Extractor now returns {steps, stated_failures, context} — handle both old (array) and new (object) shapes
+    if (Array.isArray(extractorResult)) {
+      state.extractedSteps = extractorResult;
+      state.statedFailures = [];
+      state.extractedContext = null;
+    } else {
+      state.extractedSteps = extractorResult.steps || [];
+      state.statedFailures = extractorResult.stated_failures || [];
+      state.extractedContext = extractorResult.context || null;
+    }
 
     logProc('Building your process map…', 'Visualising each step');
     state.diagramAsIs = await callDiagramAgent('diagram-as-is', 'Steps: ' + JSON.stringify(state.extractedSteps));
@@ -1215,7 +1226,13 @@ async function proceedToAnalysis() {
 
     logProc('Calculating improvements…', 'Estimating time savings and ROI');
     setPipe(4);
-    const a4input = 'Classified steps: ' + JSON.stringify(state.classifiedSteps) + '\n\nContext:\nCurrent weekly volume: ' + state.weeklyVolume + '\nBusiness type: ' + state.businessType + (state.laborRate ? '\nLabor rate: $' + state.laborRate + '/hr' : '');
+    const a4input = 'Classified steps: ' + JSON.stringify(state.classifiedSteps) +
+      '\n\nStated failures (every item must map to priority 1 or 2): ' + JSON.stringify(state.statedFailures) +
+      '\n\nTranscript (use for time estimates and failure admissions):\n' + state.transcript +
+      '\n\nContext:\nCurrent weekly volume: ' + (state.extractedContext?.weekly_volume || state.weeklyVolume) +
+      '\nTotal process time: ' + (state.extractedContext?.total_process_time || 'not stated') +
+      '\nBusiness type: ' + state.businessType +
+      (state.laborRate ? '\nLabor rate: $' + state.laborRate + '/hr' : (state.extractedContext?.labor_rate_defaulted ? '\nLabor rate: $25/hr (defaulted — not stated by owner)' : ''));
     const rawVerdicts = await callInvoke('evaluator', a4input, 8000);
     state.verdicts = safeParseJSON(rawVerdicts);
 
@@ -1229,8 +1246,16 @@ async function proceedToAnalysis() {
     state.diagramImproved = await callDiagramAgent('diagram-improved', 'Steps with verdicts: ' + JSON.stringify(mergedSteps));
 
     logProc('Writing your report…', 'Almost done');
-    const a5input = 'Verdicts: ' + JSON.stringify(state.verdicts) + '\nOriginal steps: ' + JSON.stringify(state.extractedSteps) +
-      '\n\nContext:\nBusiness type: ' + state.businessType + '\nWeekly volume: ' + state.weeklyVolume + '\nChannels: ' + state.channels + (state.laborRate ? '\nLabor rate: $' + state.laborRate + '/hr' : '');
+    const a5input = 'Verdicts: ' + JSON.stringify(state.verdicts) +
+      '\nOriginal steps: ' + JSON.stringify(state.extractedSteps) +
+      '\nStated failures: ' + JSON.stringify(state.statedFailures) +
+      '\nExtracted context: ' + JSON.stringify(state.extractedContext) +
+      '\n\nTranscript (source of truth for stated failures and times):\n' + state.transcript +
+      '\n\nContext:\nBusiness type: ' + state.businessType +
+      '\nWeekly volume: ' + (state.extractedContext?.weekly_volume || state.weeklyVolume) +
+      '\nTotal process time: ' + (state.extractedContext?.total_process_time || 'not stated') +
+      '\nChannels: ' + state.channels +
+      (state.laborRate ? '\nLabor rate: $' + state.laborRate + '/hr' : (state.extractedContext?.labor_rate_defaulted ? '\nLabor rate: $25/hr (defaulted)' : ''));
     const report = await callInvoke('synthesizer', a5input, 4000);
     state.report = report;
 
@@ -1327,7 +1352,7 @@ async function downloadPDF(event) {
 }
 
 function resetApp() {
-  Object.assign(state, { phase:0, email:'', chatHistory:[], transcript:'', extractedSteps:null, classifiedSteps:null, verdicts:null, report:'' });
+  Object.assign(state, { phase:0, email:'', chatHistory:[], transcript:'', extractedSteps:null, statedFailures:[], extractedContext:null, classifiedSteps:null, verdicts:null, report:'' });
   const em = document.getElementById('email'); if (em) em.value = '';
   document.getElementById('chat-area').innerHTML = '';
   document.getElementById('processing-log').textContent = '';
