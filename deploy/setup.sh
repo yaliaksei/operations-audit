@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # First-time server setup. Run once as root on the droplet.
-# Usage: bash deploy/setup.sh yourdomain.com
+# Usage: bash deploy/setup.sh [domain]  (defaults to flownext.co)
 set -euo pipefail
 
-DOMAIN="${1:?Usage: $0 <domain>}"
+DOMAIN="${1:-flownext.co}"
 APP_DIR="/srv/operations-audit"
 REPO="${2:-}"  # optional: git remote URL
 
