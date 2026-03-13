@@ -4,6 +4,8 @@ import os
 from functools import wraps
 from pathlib import Path
 
+import requests
+
 import yaml
 
 from dotenv import load_dotenv
@@ -145,7 +147,19 @@ def api_save_session():
 @app.route("/api/contact", methods=["POST"])
 def api_save_contact():
     try:
-        save_contact(request.json)
+        data = request.json
+        save_contact(data)
+        webhook = os.environ.get("SLACK_WEBHOOK_URL")
+        if webhook:
+            try:
+                requests.post(webhook, json={"text": (
+                    f"*New contact message*\n"
+                    f"*From:* {data.get('name')} <{data.get('email')}>\n"
+                    f"*Subject:* {data.get('subject')}\n"
+                    f"*Message:*\n{data.get('message')}"
+                )}, timeout=5)
+            except Exception:
+                app.logger.warning("Slack notification failed", exc_info=True)
         return jsonify({"ok": True})
     except Exception as e:
         app.logger.exception("contact error")

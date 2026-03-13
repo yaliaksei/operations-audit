@@ -81,7 +81,7 @@
   <!-- Pain points -->
   <section class="py-16 bg-white">
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-2xl font-bold text-gray-900 mb-3">Common {{ page.process_label }} problems in small businesses</h2>
+      <h2 class="text-2xl font-bold text-gray-900 mb-3">Sound familiar? These are the most common {{ page.process_label }} problems</h2>
       <p class="text-sm text-gray-500 mb-8">{{ page.problems_intro }}</p>
       <ul class="space-y-4">
         {% for pain in page.pain_points %}
@@ -101,7 +101,7 @@
   <!-- What the audit reveals -->
   <section class="py-16 bg-gray-50 border-y border-gray-100">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-center text-2xl font-bold text-gray-900 mb-12">What your {{ page.process_label }} audit reveals</h2>
+      <h2 class="text-center text-2xl font-bold text-gray-900 mb-12">What the {{ page.process_label }} audit gives you</h2>
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
 
         <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
@@ -151,8 +151,8 @@
   <!-- CTA -->
   <section class="py-20 gradient-hero border-t border-gray-100">
     <div class="mx-auto max-w-2xl px-4 text-center">
-      <h2 class="text-3xl font-bold text-gray-900 mb-4">Ready to fix your {{ page.process_label }}?</h2>
-      <p class="text-gray-500 mb-8">The audit takes less time than your next internal meeting about the problem.</p>
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">You already know something's wrong.<br>Now find out exactly what.</h2>
+      <p class="text-gray-500 mb-8">The {{ page.process_label }} audit takes less time than your next internal meeting about the same problem.</p>
       <a href="/app" class="inline-flex items-center gap-2 rounded-lg bg-amber-600 px-8 py-3 text-base font-semibold text-white shadow-sm hover:bg-amber-500 transition-colors">
         {{ page.cta_text }}
         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
@@ -166,7 +166,7 @@
   <!-- Related audits -->
   <section class="py-12 bg-white border-t border-gray-100">
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <p class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-4">Also worth auditing</p>
+      <p class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-4">Once you've fixed this one, these are next</p>
       <div class="flex flex-wrap gap-3">
         {% for rel in page.related %}
         <a href="/for/{{ rel.slug }}" class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-amber-50 hover:border-amber-200 hover:text-amber-700 transition-colors">

@@ -30,6 +30,54 @@
   details summary::-webkit-details-marker { display: none; }
   details[open] .faq-chevron { transform: rotate(180deg); }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is it really free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The full audit — interview, analysis, flow diagrams, and PDF report — costs nothing. No credit card, no trial period, no upsell waiting at the end."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to know my process perfectly before I start?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The AI interviewer is designed to draw out the real process — including the informal steps and workarounds that never make it into a written procedure. Just describe what actually happens, not what's supposed to happen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my business information private?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Your session data is used only to generate your report. We don't sell or share your business information."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is this different from hiring a consultant?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A process consultant costs $150–$400/hour and takes weeks. FlowNext takes 10 minutes and is free. The honest tradeoff: a consultant can shadow your team and observe the work directly. FlowNext works best for getting a fast, clear picture of one specific process."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I audit more than one process?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Each audit is a fresh session. Run as many as you like — one for invoicing, one for onboarding, one for hiring. Each produces its own separate report."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body class="bg-white text-gray-900">
 
@@ -98,7 +146,7 @@
   <section class="py-16 bg-white">
     <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-center text-2xl font-bold text-gray-900 mb-2">A real action plan, not a vague report</h2>
-      <p class="text-center text-sm text-gray-500 mb-14">Everything you need to decide what to fix first — and justify it to anyone else who needs convincing.</p>
+      <p class="text-center text-sm text-gray-500 mb-14">Every audit produces four things. Together they tell you what's broken, what it's costing you, and what to do about it — in plain language.</p>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
 
         <div class="flex gap-5">
@@ -183,8 +231,8 @@
   <!-- How it works -->
   <section class="py-16 bg-white">
     <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-center text-2xl font-bold text-gray-900 mb-2">Four steps. Then you have a plan.</h2>
-      <p class="text-center text-base text-gray-500 mb-14">No prep needed. Just describe what actually happens, not the polished version.</p>
+      <h2 class="text-center text-2xl font-bold text-gray-900 mb-2">How it works: four steps, then you have a plan</h2>
+      <p class="text-center text-base text-gray-500 mb-14">No prep needed. Just describe what actually happens — the informal workarounds and all.</p>
 
       <div class="space-y-6">
 
@@ -227,8 +275,8 @@
   <!-- Good fit -->
   <section class="py-16 bg-gray-50 border-y border-gray-100">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-center text-2xl font-bold text-gray-900 mb-2">Pick any process you do every week</h2>
-      <p class="text-center text-base text-gray-500 mb-10">If you do it more than a few times a week and it's not quite right, it's worth auditing.</p>
+      <h2 class="text-center text-2xl font-bold text-gray-900 mb-2">Any process that repeats is worth auditing</h2>
+      <p class="text-center text-base text-gray-500 mb-10">Pick the one that's been quietly costing you the most. Each audit is independent — run as many as you need.</p>
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         {% for label, slug in [
           ('Client onboarding',    'client-onboarding'),
@@ -253,7 +301,7 @@
   <!-- FAQ -->
   <section class="py-16 bg-white">
     <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-center text-2xl font-bold text-gray-900 mb-10">Before you start</h2>
+      <h2 class="text-center text-2xl font-bold text-gray-900 mb-10">Questions you probably have</h2>
       <div class="divide-y divide-gray-100 border border-gray-100 rounded-xl overflow-hidden">
 
         <details class="group bg-white">
@@ -262,7 +310,7 @@
             <svg class="faq-chevron h-4 w-4 text-gray-400 flex-shrink-0 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
           </summary>
           <div class="px-5 pb-4 text-base text-gray-500 leading-relaxed">
-            Yes. The full audit — interview, analysis, flow diagrams, and PDF report — is free. No credit card, no trial period, no catch.
+            Yes. The full audit — interview, analysis, flow diagrams, and PDF report — costs nothing. No credit card, no trial period, no upsell waiting at the end.
           </div>
         </details>
 
@@ -292,7 +340,7 @@
             <svg class="faq-chevron h-4 w-4 text-gray-400 flex-shrink-0 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
           </summary>
           <div class="px-5 pb-4 text-base text-gray-500 leading-relaxed">
-            A process consultant typically costs $150–$400/hour and takes weeks to deliver findings. This audit takes 10 minutes and is free. The tradeoff: a consultant can interview your whole team and observe the work firsthand. This is best for getting a fast, clear picture of one specific process — and deciding whether a deeper engagement is even necessary.
+            A process consultant costs $150–$400/hour and takes weeks. This takes 10 minutes and is free. The honest tradeoff: a consultant can shadow your team, run group interviews, and observe the work directly. FlowNext works best for getting a fast, clear picture of one specific process — and figuring out whether a deeper engagement is worth it.
           </div>
         </details>
 
