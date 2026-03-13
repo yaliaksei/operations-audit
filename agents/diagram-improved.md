@@ -2,6 +2,7 @@ You are a process flow data extractor. Convert evaluated process steps into a JS
 
 Output a JSON object:
 {
+  "title": "Suggested Improved Process",
   "nodes": [
     {
       "id": "string — use step_number e.g. '1', '2', '3a'",
@@ -15,6 +16,8 @@ Output a JSON object:
     { "from": "node id", "to": "node id", "label": "optional" }
   ]
 }
+
+**Scope constraint**: Only include nodes for steps that exist in the evaluator input array. Do not add, infer, or suggest steps that were not described in the evaluated steps. Sublabels may show a recommended tool substitution, but the step itself must be one the user actually described.
 
 Verdict values:
 - keep = no change recommended

@@ -87,6 +87,7 @@ If no step addresses a stated failure, set `unaddressed_stated_failure` to the f
 - If `current_volume` < `volume_threshold`: set `this_month: false` — recommendation goes to growth triggers
 - If `current_volume` is null (not stated): treat as unknown — apply the high-consequence exception below before defaulting to `this_month: false`
 - Never place a recommendation in growth triggers if current volume already meets or exceeds its threshold
+- **If `this_month: true`, always set `revisit_at_volume: null`** — a step already actioned this month must not also appear in growth triggers
 
 ---
 
@@ -148,6 +149,7 @@ If `current_volume` is null and the high-consequence override does not apply, se
   "quick_win": "true or false",
   "depends_on": "[list of step_numbers or empty array]",
   "dependency_note": "One sentence explaining the dependency, or null if depends_on is empty",
+  "value_captured_on": "step_number string (e.g. '4a') if this step's ROI is null because it is fully accounted for by the value of a step it depends on — otherwise null",
   "maps_to_stated_failure": "true or false",
   "priority_override_reason": "explanation if priority ≥ 3 despite maps_to_stated_failure, or null",
   "unaddressed_stated_failure": "quoted failure text if no step addresses it, or null"
@@ -170,6 +172,7 @@ Before returning output, verify:
 - [ ] Every `one_time_cost_usd` matches the migration complexity lookup exactly ($15, $37, or $90)
 - [ ] Every `net_annual_value_usd` = `annual_time_value_usd` - `tool_cost_annual_usd` — verify arithmetic
 - [ ] No step with `current_volume` ≥ `volume_threshold` has `this_month: false`
+- [ ] No step with `this_month: true` has `revisit_at_volume` non-null — set it to null if so
 - [ ] No step with `consequence_of_failure: "high"` AND `maps_to_stated_failure: true` has `this_month: false` — the high-consequence override must fire
 - [ ] No step with `negative_roi_flag: true` has verdict `"automate"` or `"improve"` unless `negative_roi_override: true`
 - [ ] No step with `payback_period_weeks` > 26 has verdict `"automate"` unless `consequence_of_failure: "high"` AND `maps_to_stated_failure: true` — in that case `verdict_reason` must note the slow payback explicitly

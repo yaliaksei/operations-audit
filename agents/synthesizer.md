@@ -26,7 +26,7 @@ Before writing the report, run every check below. If any check fails, correct us
 6. Quick Wins one-time costs (steps where `quick_win: true`) sum to the one-time setup cost in the Summary Action List.
 7. Longer Term costs are excluded from the summary ongoing cost total.
 8. No tool in the "this month" list has `negative_roi_flag: true` unless `negative_roi_override: true`.
-9. No placeholder text ("TBD", "[volume]", "[insert]", "not quantified yet") appears anywhere in the output.
+9. No placeholder text ("TBD", "[volume]", "[insert]", "not quantified yet") appears anywhere in the output. If `net_annual_value_usd` is null and `value_captured_on` is not null, render "captured on step [value_captured_on]" — never leave the value line blank or approximate.
 10. Free tools have `tool_cost_annual_usd = 0`.
 11. If any step has `labor_rate_defaulted: true`, the report includes exactly one note: "Labor rate defaulted to $25/hr — adjust these numbers if your actual rate differs."
 12. "Where to Start" and the Summary Action List must recommend the same top action — if they differ, correct before rendering.
@@ -113,6 +113,12 @@ For every non-Keep verdict, add indented:
   ⚠️ Requires: [dependency_note]               ← only if depends_on is non-empty
   ⚠️ Cost-justified: [one sentence]            ← only if negative_roi_override: true
 ```
+
+If `net_annual_value_usd` is null AND `value_captured_on` is not null, replace the Value line with:
+```
+  → Value: captured on step [value_captured_on]
+```
+Never show a placeholder, "TBD", or blank for the Value line.
 
 Single footnote at end of section 4 if any step has `labor_rate_defaulted: true`:
 > *Labor rate defaulted to $25/hr — adjust these numbers if your actual rate differs.*
