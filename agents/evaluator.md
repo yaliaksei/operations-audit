@@ -67,7 +67,7 @@ Apply in order:
 2. If `consequence_of_failure` is `"high"` → recommend fix regardless of volume; prefer free tools first
 3. If `automation_potential` is `"high"` or `"medium"` → consider `"automate"` or `"improve"` even if `current_quality` is `"adequate"`
 4. If `volume_sensitivity` is `"yes"` → only recommend paid change if `current_volume` ≥ `volume_threshold`
-5. For paid tools: only recommend if `net_annual_value_usd` > 0 at current volume. If payback > 26 weeks, downgrade verdict to `"improve"`.
+5. For paid tools: only recommend if `net_annual_value_usd` > 0 at current volume. If `payback_period_weeks` > 26, downgrade verdict from `"automate"` to `"improve"` — UNLESS `consequence_of_failure` is `"high"` AND `maps_to_stated_failure` is `true`, in which case keep `"automate"` and note the slow payback in `verdict_reason`.
 
 ---
 
@@ -85,6 +85,7 @@ If no step addresses a stated failure, set `unaddressed_stated_failure` to the f
 
 - If `current_volume` ≥ `volume_threshold`: set `this_month: true`
 - If `current_volume` < `volume_threshold`: set `this_month: false` — recommendation goes to growth triggers
+- If `current_volume` is null (not stated): treat as unknown — apply the high-consequence exception below before defaulting to `this_month: false`
 - Never place a recommendation in growth triggers if current volume already meets or exceeds its threshold
 
 ---
@@ -93,10 +94,15 @@ If no step addresses a stated failure, set `unaddressed_stated_failure` to the f
 
 Compute deterministically. Do not leave to the Synthesizer to infer.
 
-`this_month: true` when ALL:
+`this_month: true` when ALL of the following:
 - `priority` ≤ 2
 - `net_annual_value_usd` ≥ 0 OR `consequence_of_failure` is `"high"`
-- `current_volume` ≥ `volume_threshold` OR `volume_sensitivity` is `"no"`
+- ANY ONE of:
+  - `current_volume` ≥ `volume_threshold`
+  - `volume_sensitivity` is `"no"`
+  - `consequence_of_failure` is `"high"` AND `maps_to_stated_failure` is `true` ← **high-consequence override: admitted failures with high consequence are always this-month regardless of volume**
+
+If `current_volume` is null and the high-consequence override does not apply, set `this_month: false` and set `revisit_at_volume` to `"collect volume data first"`.
 
 `quick_win: true` when ALL:
 - `effort` is `"low"`
@@ -164,7 +170,9 @@ Before returning output, verify:
 - [ ] Every `one_time_cost_usd` matches the migration complexity lookup exactly ($15, $37, or $90)
 - [ ] Every `net_annual_value_usd` = `annual_time_value_usd` - `tool_cost_annual_usd` — verify arithmetic
 - [ ] No step with `current_volume` ≥ `volume_threshold` has `this_month: false`
+- [ ] No step with `consequence_of_failure: "high"` AND `maps_to_stated_failure: true` has `this_month: false` — the high-consequence override must fire
 - [ ] No step with `negative_roi_flag: true` has verdict `"automate"` or `"improve"` unless `negative_roi_override: true`
+- [ ] No step with `payback_period_weeks` > 26 has verdict `"automate"` unless `consequence_of_failure: "high"` AND `maps_to_stated_failure: true` — in that case `verdict_reason` must note the slow payback explicitly
 - [ ] `formula_shown` is populated for every step where `annual_time_value_usd` is not null
 - [ ] `payback_period_weeks` = `one_time_cost_usd` ÷ (`net_annual_value_usd` ÷ 52) — verify arithmetic
 - [ ] `depends_on` only references step_numbers that exist in this array

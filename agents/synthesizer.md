@@ -18,16 +18,19 @@ You will receive the full evaluated pipeline object: `metadata`, `stated_failure
 
 Before writing the report, run every check below. If any check fails, correct using available data. If uncorrectable, flag under a ⚠️ Data Gap heading and continue with best available data.
 
-1. "Where to Start" action matches the step with `priority = 1` and `this_month: true` — not a lower-priority step
-2. Every step with `priority = 1` appears in the "this month" action list — not in Longer Term
-3. Every item in `stated_failures[]` appears in at least one `verdict_reason` — if not, flag which failure was unaddressed
-4. No step currently rated `"keep"` receives an `"improve"` or higher verdict without a specific reason from the transcript
-5. Quick Wins one-time costs (steps where `quick_win: true`) sum to the one-time setup cost in the Summary Action List
-6. Longer Term costs are excluded from the summary ongoing cost total
-7. No tool in the "this month" list has `negative_roi_flag: true` unless `negative_roi_override: true`
-8. No placeholder text ("TBD", "[volume]", "[insert]", "not quantified yet") appears anywhere in the output
-9. Free tools have `tool_cost_annual_usd = 0`
-10. If any step has `labor_rate_defaulted: true`, the report includes exactly one note: "Labor rate defaulted to $25/hr — adjust these numbers if your actual rate differs."
+1. "Where to Start" action matches the step with `priority = 1` and `this_month: true` — not a lower-priority step. If no step has both, flag as Data Gap.
+2. Every step with `priority = 1` appears in the "this month" action list — not in Longer Term or Growth Triggers.
+3. Every item in `stated_failures[]` appears in at least one `verdict_reason` — if not, flag which failure was unaddressed.
+4. No step with `consequence_of_failure: "high"` AND `maps_to_stated_failure: true` appears only in Longer Term or Growth Triggers — these must be in "this month" per the high-consequence override.
+5. No step currently rated `"keep"` receives an `"improve"` or higher verdict without a specific reason from the transcript.
+6. Quick Wins one-time costs (steps where `quick_win: true`) sum to the one-time setup cost in the Summary Action List.
+7. Longer Term costs are excluded from the summary ongoing cost total.
+8. No tool in the "this month" list has `negative_roi_flag: true` unless `negative_roi_override: true`.
+9. No placeholder text ("TBD", "[volume]", "[insert]", "not quantified yet") appears anywhere in the output.
+10. Free tools have `tool_cost_annual_usd = 0`.
+11. If any step has `labor_rate_defaulted: true`, the report includes exactly one note: "Labor rate defaulted to $25/hr — adjust these numbers if your actual rate differs."
+12. "Where to Start" and the Summary Action List must recommend the same top action — if they differ, correct before rendering.
+13. Section 8 "What Not to Change" sentences must be specific to the actual step and tool — no repeated boilerplate sentence structure across multiple entries.
 
 ---
 
@@ -212,4 +215,5 @@ If any step has `labor_rate_defaulted: true`:
 - Every tool named must be the exact tool from the evaluator output
 - Every dollar figure must come from the evaluator JSON — never invent or round independently
 - State one-time and ongoing costs explicitly and separately
+- Section 8 "What Not to Change": each entry must describe the specific step and why it's fine — use the actual tool name and the actual reason. Never repeat the same sentence structure more than twice.
 - Maximum 2 printed pages
