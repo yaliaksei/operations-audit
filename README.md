@@ -1,4 +1,4 @@
-# Fractional COO — Process Analyzer
+# FlowNext — AI Operations Advisor
 
 A Flask web app that runs a 7-stage AI pipeline to audit small business workflows. It interviews a business owner, extracts and evaluates process steps, renders flow diagrams, and produces a downloadable PDF report.
 

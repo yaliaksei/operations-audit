@@ -1,5 +1,5 @@
 [Unit]
-Description=Operations Audit (Fractional COO)
+Description=Operations Audit (FlowNext)
 After=network.target
 
 [Service]
