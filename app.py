@@ -65,6 +65,38 @@ def for_page(slug):
     return render_template("for.html", page=page, slug=slug, base_url=request.url_root.rstrip("/"))
 
 
+@app.route("/llms.txt")
+def llms_txt():
+    base = request.host_url.rstrip("/")
+    seo_slugs = sorted(p.stem for p in SEO_DIR.glob("*.yaml"))
+    seo_lines = "\n".join(f"- [{s.replace('-', ' ').title()}]({base}/for/{s})" for s in seo_slugs)
+    content = f"""\
+# FlowNext — AI Operations Advisor
+
+> A free AI-powered tool that audits small business workflows in seven steps: \
+interview, extract, classify, evaluate, diagram, and report. \
+It surfaces bottlenecks, automation opportunities, and ROI estimates, \
+then produces a downloadable PDF assessment.
+
+## Pages
+
+- [Home]({base}/): Marketing landing page with overview and call-to-action
+- [App]({base}/app): The main seven-stage audit application
+- [Terms]({base}/terms): Terms of service
+- [Privacy]({base}/privacy): Privacy policy
+- [Contact]({base}/contact): Contact form
+
+## Workflow Guides
+
+{seo_lines}
+
+## API
+
+- [Sitemap]({base}/sitemap.xml): Full XML sitemap of all pages
+"""
+    return Response(content, mimetype="text/plain")
+
+
 @app.route("/sitemap.xml")
 def sitemap():
     base = request.host_url.rstrip("/")
