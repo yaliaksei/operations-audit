@@ -115,6 +115,18 @@ def sitemap():
     return Response(xml, mimetype="application/xml")
 
 
+@app.route("/robots.txt")
+def robots():
+    base = request.host_url.rstrip("/")
+    content = (
+        "User-agent: *\n"
+        "Disallow: /admin\n"
+        "\n"
+        f"Sitemap: {base}/sitemap.xml\n"
+    )
+    return Response(content, mimetype="text/plain")
+
+
 # ── AI API ─────────────────────────────────────────────────────────────────────
 
 @app.route("/api/chat", methods=["POST"])
