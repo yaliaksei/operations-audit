@@ -67,13 +67,17 @@
         {% if s.diagram_asis %}
         <div>
           <p class="text-xs font-medium text-gray-500 mb-2">As-is process</p>
-          <div class="overflow-x-auto border border-gray-100 rounded-md p-2 bg-gray-50">{{ s.diagram_asis|safe }}</div>
+          <iframe srcdoc="{{ s.diagram_asis|e }}" sandbox=""
+                  class="w-full border border-gray-100 rounded-md bg-gray-50 overflow-x-auto"
+                  style="min-height:200px" scrolling="auto"></iframe>
         </div>
         {% endif %}
         {% if s.diagram_improved %}
         <div>
           <p class="text-xs font-medium text-gray-500 mb-2">Improved process</p>
-          <div class="overflow-x-auto border border-gray-100 rounded-md p-2 bg-gray-50">{{ s.diagram_improved|safe }}</div>
+          <iframe srcdoc="{{ s.diagram_improved|e }}" sandbox=""
+                  class="w-full border border-gray-100 rounded-md bg-gray-50 overflow-x-auto"
+                  style="min-height:200px" scrolling="auto"></iframe>
         </div>
         {% endif %}
       </div>

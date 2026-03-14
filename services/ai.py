@@ -13,6 +13,17 @@ MODEL = "gemini-2.5-flash"
 
 JSON_AGENTS = {"extractor", "classifier", "evaluator", "diagram-as-is", "diagram-improved"}
 
+# Allowlist of agent names that callers may request.
+ALLOWED_AGENTS = {
+    "interviewer",
+    "extractor",
+    "classifier",
+    "evaluator",
+    "synthesizer",
+    "diagram-as-is",
+    "diagram-improved",
+}
+
 # Keywords that map a free-text business_type to a specialized interviewer slug.
 # Checked in order; first match wins.
 _INTERVIEWER_KEYWORDS: list[tuple[str, list[str]]] = [
@@ -35,6 +46,8 @@ def _resolve_interviewer_slug(business_type: str) -> str:
 
 
 def load_agent(name: str) -> str:
+    if name not in ALLOWED_AGENTS:
+        raise ValueError(f"Unknown agent: {name}")
     path = AGENTS_DIR / f"{name}.md"
     if not path.exists():
         raise FileNotFoundError(f"Agent prompt not found: {name}")
