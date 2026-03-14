@@ -1,6 +1,8 @@
 import base64
+import hmac
 import json
 import os
+import re
 from functools import wraps
 from pathlib import Path
 
@@ -19,6 +21,22 @@ load_dotenv()
 
 app = Flask(__name__)
 init_db()
+
+
+@app.after_request
+def set_security_headers(response):
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://www.googletagmanager.com; "
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; "
+        "font-src 'self' https://fonts.gstatic.com; "
+        "img-src 'self' data:; "
+        "connect-src 'self';"
+    )
+    return response
 
 
 @app.context_processor
@@ -58,8 +76,10 @@ def contact():
 
 @app.route("/for/<slug>")
 def for_page(slug):
-    path = SEO_DIR / f"{slug}.yaml"
-    if not path.exists():
+    if not re.fullmatch(r"[a-z0-9-]+", slug):
+        return "Page not found", 404
+    path = (SEO_DIR / f"{slug}.yaml").resolve()
+    if not path.is_relative_to(SEO_DIR.resolve()) or not path.exists():
         return "Page not found", 404
     page = yaml.safe_load(path.read_text())
     return render_template("for.html", page=page, slug=slug, base_url=request.url_root.rstrip("/"))
@@ -156,9 +176,12 @@ def invoke():
         data = request.json
         text = invoke_agent(data["agent"], data["user_content"], data.get("max_tokens", 4000), data.get("business_type", ""))
         return jsonify({"text": text})
-    except Exception as e:
+    except (ValueError, FileNotFoundError) as e:
+        app.logger.warning("invoke bad request: %s", e)
+        return jsonify({"error": str(e)}), 400
+    except Exception:
         app.logger.exception("invoke error")
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": "An internal error occurred"}), 500
 
 
 @app.route("/api/pdf", methods=["POST"])
@@ -177,9 +200,9 @@ def generate_pdf():
             mimetype="application/pdf",
             headers={"Content-Disposition": "attachment; filename=ops-assessment.pdf"},
         )
-    except Exception as e:
+    except Exception:
         app.logger.exception("pdf error")
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": "An internal error occurred"}), 500
 
 
 # ── Session & contact ──────────────────────────────────────────────────────────
@@ -189,9 +212,9 @@ def api_save_session():
     try:
         session_id = save_session(request.json)
         return jsonify({"session_id": session_id})
-    except Exception as e:
+    except Exception:
         app.logger.exception("session save error")
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": "An internal error occurred"}), 500
 
 
 @app.route("/api/contact", methods=["POST"])
@@ -211,9 +234,9 @@ def api_save_contact():
             except Exception:
                 app.logger.warning("Slack notification failed", exc_info=True)
         return jsonify({"ok": True})
-    except Exception as e:
+    except Exception:
         app.logger.exception("contact error")
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": "An internal error occurred"}), 500
 
 
 # ── Admin ──────────────────────────────────────────────────────────────────────
@@ -228,7 +251,7 @@ def require_admin(f):
         if auth.startswith("Basic "):
             try:
                 _, password = base64.b64decode(auth[6:]).decode().split(":", 1)
-                if password == admin_key:
+                if hmac.compare_digest(password, admin_key):
                     return f(*args, **kwargs)
             except Exception:
                 pass
