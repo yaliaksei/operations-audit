@@ -265,6 +265,11 @@ def admin_list():
     return render_template("admin.html", sessions=list_sessions())
 
 
+@app.route("/admin/logout")
+def admin_logout():
+    return Response("Logged out", 401, {"WWW-Authenticate": 'Basic realm="Admin"'})
+
+
 @app.route("/admin/<session_id>")
 @require_admin
 def admin_detail(session_id):
