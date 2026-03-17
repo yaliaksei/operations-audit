@@ -8,8 +8,16 @@ pain_points:
   - "First response is slow because tickets sit in a shared inbox nobody owns"
   - "The same issues recur every week because root causes are never fixed"
   - "Escalations happen by accident, not design — context gets lost in the transfer"
+definition: "Support triage is the process of receiving, categorizing, prioritizing, and routing incoming customer issues to the right person or team for resolution — covering intake, priority classification, assignment, first response, and escalation. For small businesses, poor triage means urgent issues wait alongside low-stakes ones and customers repeat themselves across multiple contacts."
 process_label: "support triage"
 cta_text: "Audit your support process — free"
+faqs:
+  - q: "How do I handle support tickets faster without hiring more staff?"
+    a: "Speed usually comes from routing, not headcount. If all tickets land in a shared inbox with no priority system, urgent issues wait behind routine ones. A triage process that classifies tickets by severity and routes them to a clear owner can dramatically reduce first-response time without adding staff."
+  - q: "Why do the same customer issues keep coming back week after week?"
+    a: "Recurring issues are a signal that your support process is resolving symptoms but not causes. A triage audit identifies which issue categories repeat most often and whether there's a step in your process for flagging systemic problems to the team responsible for fixing them."
+  - q: "What's the right first response time for small business customer support?"
+    a: "For most service businesses, same-business-day first response is the minimum expectation for non-urgent issues. Urgent issues — service outages, billing errors, safety concerns — should get a response within 2 hours. An audit maps your current response times against these benchmarks and identifies where delays occur."
 related:
   - label: "Client Onboarding"
     slug: client-onboarding

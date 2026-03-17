@@ -8,8 +8,16 @@ pain_points:
   - "Formatting and layout takes hours because there's no locked template"
   - "Reports go out late, so decisions that depended on them get delayed too"
   - "Numbers sometimes contradict across departments because sources differ"
+definition: "Monthly reporting is the process of gathering business performance data, synthesizing it into a structured report, and distributing it to decision-makers — covering data collection, calculation, formatting, review, and distribution. For small businesses, this process often takes 1–2 full days per month and delays are common because data lives across disconnected systems."
 process_label: "monthly reporting"
 cta_text: "Audit your reporting process — free"
+faqs:
+  - q: "Why does monthly reporting take so long in a small business?"
+    a: "Most small businesses pull data manually from 3–6 different systems — accounting software, CRM, spreadsheets, and ops tools — because there's no automated data pipeline. Formatting also starts from scratch each month because there's no locked template. An audit identifies exactly where the time goes and which steps can be eliminated or automated."
+  - q: "How do I get my monthly reports out faster without sacrificing accuracy?"
+    a: "The two highest-leverage changes are: (1) locking a report template so formatting isn't rebuilt each month, and (2) identifying which data sources can be automated or pre-pulled. Most reporting processes have 3–5 manual data collection steps that could be replaced with a simple dashboard or export. An audit maps which ones."
+  - q: "What should a small business monthly report include?"
+    a: "At minimum: revenue vs. target, cash position, key operational metrics specific to your business type, and 3–5 decisions the report is meant to inform. Reports that try to include everything end up informing nothing. An audit of your reporting process often reveals that the report is being built without a clear audience or decision in mind."
 related:
   - label: "Invoice & Collections"
     slug: invoice-collections

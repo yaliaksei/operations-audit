@@ -8,8 +8,16 @@ pain_points:
   - "Response time is slow, so strong candidates ghost you for faster-moving companies"
   - "No structured scoring means hiring decisions rely on gut feel"
   - "Offer letters take a week to write because there's no template"
+definition: "Hiring and screening is the process of attracting, evaluating, and selecting candidates for open positions — covering job posting, application review, screening calls, interviews, scoring, and offer creation. For small businesses, a typical hire takes 3–8 weeks and involves 6–12 process steps."
 process_label: "hiring and screening"
 cta_text: "Audit your hiring process — free"
+faqs:
+  - q: "Why do small businesses lose good candidates during hiring?"
+    a: "The most common reason is speed — top candidates receive offers within days, not weeks. Small businesses often lose them at the scheduling or decision stage because there's no structured timeline or clear owner for each step. A process audit identifies exactly where the delays occur."
+  - q: "How long should a small business hiring process take?"
+    a: "From posting to offer, a well-run small business hiring process should take 2–4 weeks for most roles. If it's taking longer, the bottleneck is usually in screening coordination, interview scheduling, or offer letter preparation — all fixable with process changes."
+  - q: "How do I make hiring decisions more consistent without a large HR team?"
+    a: "The key is a structured scoring rubric applied by every interviewer for every candidate. Without one, hiring decisions default to gut feel and vary by interviewer. An audit of your screening process typically reveals 2–3 evaluation gaps that create inconsistent results."
 related:
   - label: "Client Onboarding"
     slug: client-onboarding

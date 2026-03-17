@@ -8,8 +8,16 @@ pain_points:
   - "New clients ask questions you already answered in the proposal"
   - "Internal hand-offs get dropped when the salesperson moves to the next deal"
   - "No standard checklist means onboarding quality depends on who handles it"
+definition: "Client onboarding is the process a business uses to welcome and set up a new client after the contract is signed — covering contract execution, internal hand-offs, first deliverable setup, and establishing communication cadence. For most service businesses, it runs 3–10 days and involves 4–8 distinct steps."
 process_label: "client onboarding"
 cta_text: "Audit your onboarding — free"
+faqs:
+  - q: "Why do new clients go quiet after signing?"
+    a: "Most client ghosting after signing happens because onboarding involves too many manual hand-offs and unclear next steps. An audit typically flags 2–3 specific steps where communication breaks down and clients are left waiting with no update."
+  - q: "How long should client onboarding take for a small business?"
+    a: "For most service businesses with 5–20 clients per month, onboarding a new client should take no more than 3–5 business days. If it's taking longer, the bottleneck is usually in contract execution, internal hand-off, or first-deliverable setup."
+  - q: "What's the ROI of fixing a slow onboarding process?"
+    a: "Faster onboarding accelerates first invoice timing, reduces churn from poor first impressions, and cuts the internal time spent chasing documents and answering repeat questions. FlowNext calculates the specific dollar value for your volume and process."
 related:
   - label: "Hiring & Screening"
     slug: hiring-screening

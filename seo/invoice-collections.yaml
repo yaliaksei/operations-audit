@@ -8,8 +8,16 @@ pain_points:
   - "No automatic follow-up — chasing falls to whoever remembers"
   - "Payment terms are buried in contracts clients never re-read"
   - "You find out cash is tight when the bank balance surprises you, not before"
+definition: "Invoicing and collections is the end-to-end process of billing clients for completed work and following up until payment is received — covering invoice creation, delivery, payment terms, reminders, and escalation. For most small businesses, it runs 15–45 days per invoice cycle and involves 5–10 touchpoints."
 process_label: "invoicing and collections"
 cta_text: "Audit your invoicing process — free"
+faqs:
+  - q: "Why are my clients always paying late?"
+    a: "Late payment is usually a process problem, not a client attitude problem. Common causes include invoices sent days after work is complete, payment terms buried in contracts, and no automatic follow-up system. Fixing these typically reduces average days-to-payment by 30–50%."
+  - q: "How do I speed up invoice collections without damaging client relationships?"
+    a: "The most effective changes are structural, not confrontational: send invoices immediately upon completion, set clear net terms upfront, and automate polite reminders at 3, 7, and 14 days. An audit identifies exactly which steps in your current process are creating friction."
+  - q: "What does a healthy invoicing process look like for a small business?"
+    a: "A healthy invoicing process sends invoices within 24 hours of work completion, has automated reminders, tracks payment status in a single system, and escalates overdue accounts through a defined sequence — not whoever remembers to follow up."
 related:
   - label: "Quote & Proposal"
     slug: quote-proposal

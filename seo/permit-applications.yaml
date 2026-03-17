@@ -8,8 +8,16 @@ pain_points:
   - "Status is unknown for weeks because nobody owns the follow-up"
   - "Wrong form versions are submitted because requirements change and the team isn't updated"
   - "Permit timelines aren't factored into project schedules until it's too late"
+definition: "Permit applications is the process of preparing, submitting, and tracking approval for regulatory permits required before work can legally begin — covering requirements research, document preparation, submission, status follow-up, and resubmission after rejection. For construction and trade businesses, permit delays are one of the most common causes of project timeline failures."
 process_label: "permit applications"
 cta_text: "Audit your permit process — free"
+faqs:
+  - q: "Why do permit applications keep getting rejected?"
+    a: "The most common causes are missing documents, incorrect form versions, and incomplete site information — all preventable with a pre-submission checklist. Most small businesses don't have one, so the same mistakes recur. An audit identifies your most common rejection reasons and whether your process has a verification step before submission."
+  - q: "How do I track permit status without it falling through the cracks?"
+    a: "Permit status tracking fails when there's no single owner and no follow-up cadence. Applications go in and nobody checks until the client asks. The fix is assigning a named owner per permit and a weekly check-in step. An audit maps whether your process has any monitoring step at all after submission."
+  - q: "How far in advance should permit applications be submitted for construction projects?"
+    a: "This varies by jurisdiction and project type, but most small contractors underestimate lead time by 2–4 weeks. In many municipalities, standard permits take 2–6 weeks; complex projects or revisions can take 2–3 months. An audit identifies whether your process factors permit timelines into project scheduling or treats them as an afterthought."
 related:
   - label: "Contractor Compliance"
     slug: contractor-compliance
