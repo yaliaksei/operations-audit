@@ -203,12 +203,21 @@ PDF_CSS = """
     margin: 0;
   }
 
-  h1 { font-size: 18pt; color: #1e1b4b; margin: 0 0 4pt; }
-  .meta { color: #6b7280; font-size: 10pt; margin-bottom: 24pt; }
-  .diagram-page { page: diagram; }
-  .diagram-page svg { width: 100%; height: 190mm; display: block; }
-  .diagram-page h2 { font-size: 12pt; color: #4338ca; margin: 0 0 8pt;
-                     border-bottom: 1px solid #e0e7ff; padding-bottom: 4pt; }
+  .cover {
+    height: 264mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  h1 { font-size: 22pt; color: #1e1b4b; margin: 0 0 8pt; }
+  .meta { color: #6b7280; font-size: 11pt; margin: 0; }
+  .diagram-page { page: diagram; break-inside: avoid; }
+  .diagram-page h2 { font-size: 12pt; color: #4338ca; margin: 0 0 6pt;
+                     border-bottom: 1px solid #e0e7ff; padding-bottom: 3pt;
+                     break-after: avoid; }
+  .diagram-page svg { width: 100%; height: 172mm; display: block; }
 
   .report-body h2 {
     font-size: 11pt; font-weight: 700; color: #4338ca;
@@ -298,8 +307,10 @@ def build_pdf(
 
     html = f"""<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><style>{PDF_CSS}</style></head><body>
-  <h1>Operational Assessment</h1>
-  <div class="meta">{meta}</div>
+  <div class="cover">
+    <h1>Operational Assessment</h1>
+    <div class="meta">{meta}</div>
+  </div>
 
   <div class="diagram-page">
     <h2>Current Process Flow</h2>

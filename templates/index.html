@@ -562,9 +562,7 @@
           </div>
         </div>
 
-        <div class="glass-card rounded-2xl p-6">
-          <pre id="final-report" class="text-base text-gray-800 leading-7 whitespace-pre-wrap font-sans"></pre>
-        </div>
+        <div id="report-summary" class="space-y-4"></div>
       </div>
 
     </main>
@@ -576,7 +574,7 @@ const state = {
   phase: 0, businessType: '', weeklyVolume: '', processName: '', channels: '', email: '', laborRate: '',
   chatHistory: [], transcript: '', extractedSteps: null,
   statedFailures: [], extractedContext: null,
-  classifiedSteps: null, verdicts: null, report: ''
+  classifiedSteps: null, verdicts: null, webSummary: null, pdfReport: ''
 };
 
 // ─── WIZARD NAVIGATION ─────────────────────────────────────────
@@ -1259,15 +1257,17 @@ async function proceedToAnalysis() {
       '\nTotal process time: ' + (state.extractedContext?.total_process_time || 'not stated') +
       '\nChannels: ' + state.channels +
       (state.laborRate ? '\nLabor rate: $' + state.laborRate + '/hr' : (state.extractedContext?.labor_rate_defaulted ? '\nLabor rate: $25/hr (defaulted)' : ''));
-    const report = await callInvoke('synthesizer', a5input, 4000);
-    state.report = report;
+    const rawReport = await callInvoke('synthesizer', a5input, 6000);
+    const { webSummary, pdfReport } = parseSynthesizerOutput(rawReport);
+    state.webSummary = webSummary;
+    state.pdfReport = pdfReport;
 
     setPipe(6);
     logProc('Your report is ready', '');
 
     setTimeout(async () => {
       showPhase('report');
-      document.getElementById('final-report').textContent = report;
+      renderWebSummary(state.webSummary);
       document.getElementById('download-btn').style.display = 'inline-flex';
       renderFlowDiagram('diagram-improved', state.diagramImproved, true);
       await saveSession();
@@ -1301,7 +1301,7 @@ async function saveSession() {
         transcript:       state.transcript,
         diagram_asis:     diagramAsIs,
         diagram_improved: diagramImproved,
-        report:           state.report,
+        report:           state.pdfReport,
       })
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -1311,8 +1311,143 @@ async function saveSession() {
   }
 }
 
+function parseSynthesizerOutput(raw) {
+  const summaryMatch = raw.match(/===WEB_SUMMARY===\s*([\s\S]*?)\s*===PDF_REPORT===/);
+  const reportMatch  = raw.match(/===PDF_REPORT===\s*([\s\S]*)$/);
+  const webSummary   = summaryMatch ? safeParseJSON(summaryMatch[1].trim()) : null;
+  const pdfReport    = reportMatch  ? reportMatch[1].trim() : raw;
+  return { webSummary, pdfReport };
+}
+
+function renderWebSummary(s) {
+  const el = document.getElementById('report-summary');
+  if (!s || !el) return;
+
+  const healthColors = {
+    '🟢': { bg:'bg-green-50',  border:'border-green-200',  text:'text-green-800',  score:'text-green-700'  },
+    '🟡': { bg:'bg-amber-50',  border:'border-amber-200',  text:'text-amber-800',  score:'text-amber-700'  },
+    '🔴': { bg:'bg-red-50',    border:'border-red-200',    text:'text-red-800',    score:'text-red-700'    },
+  };
+  const hc = healthColors[s.health_score?.emoji] || healthColors['🟡'];
+
+  let html = '';
+
+  // ── Data gaps ──────────────────────────────────────────────────────────────
+  if (s.data_gaps?.length) {
+    html += `<div class="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 space-y-1">
+      ${s.data_gaps.map(g => `<p class="text-sm text-amber-800"><strong>⚠️ Data Gap:</strong> ${esc(g)}</p>`).join('')}
+    </div>`;
+  }
+
+  // ── Health score ───────────────────────────────────────────────────────────
+  html += `<div class="glass-card rounded-2xl p-6 ${hc.bg} border ${hc.border}">
+    <div class="flex items-start justify-between gap-4">
+      <div class="flex-1">
+        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Process Health</p>
+        <p class="text-lg font-semibold ${hc.text} mb-2">${esc(s.health_score.emoji)} ${esc(s.health_score.label)}</p>
+        <p class="text-sm text-gray-700 leading-relaxed">${esc(s.health_score.summary)}</p>
+      </div>
+      <div class="flex-shrink-0 text-right">
+        <span class="text-4xl font-bold ${hc.score}">${s.health_score.score}</span>
+        <span class="text-lg text-gray-400">/10</span>
+      </div>
+    </div>
+  </div>`;
+
+  // ── Where to start ─────────────────────────────────────────────────────────
+  const ws = s.where_to_start;
+  if (ws) {
+    const kvRows = [
+      ['Action',         ws.action],
+      ['Tool',           ws.tool],
+      ['Setup time',     ws.setup_time],
+      ['Why now',        ws.why_now],
+      ['Expected value', ws.expected_value],
+    ].map(([k, v]) => `<div class="flex gap-3 text-sm py-1.5 border-t border-gray-100 first:border-t-0">
+        <span class="font-semibold text-gray-500 w-28 flex-shrink-0">${esc(k)}</span>
+        <span class="text-gray-800">${esc(v)}</span>
+      </div>`).join('');
+    html += `<div class="glass-card rounded-2xl p-6 border-l-4 border-indigo-500">
+      <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Where to Start</p>
+      <div>${kvRows}</div>
+      ${ws.negative_roi_override ? '<p class="mt-3 text-xs text-amber-700 bg-amber-50 rounded-lg px-3 py-2">⚠️ Negative net ROI at current volume — recommended due to high consequence of failure.</p>' : ''}
+    </div>`;
+  }
+
+  // ── ROI table ──────────────────────────────────────────────────────────────
+  if (s.roi_table?.length) {
+    const rows = s.roi_table.map(r => `<tr class="border-t border-gray-100 hover:bg-gray-50">
+        <td class="py-2.5 pr-3 text-sm font-medium text-gray-900">${esc(r.step)}</td>
+        <td class="py-2.5 pr-3 text-sm text-gray-600">${esc(r.recommendation)}</td>
+        <td class="py-2.5 pr-3 text-sm text-gray-700 text-right tabular-nums">$${r.one_time_cost}</td>
+        <td class="py-2.5 pr-3 text-sm font-medium text-green-700 text-right tabular-nums">${r.annual_value != null ? '$' + r.annual_value + '/yr' : esc(r.note || '—')}</td>
+        <td class="py-2.5 text-sm text-gray-500 text-right tabular-nums">${r.payback_weeks != null ? r.payback_weeks + ' wks' : '—'}</td>
+      </tr>`).join('');
+    const t = s.roi_totals || {};
+    html += `<div class="glass-card rounded-2xl p-6">
+      <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-4">ROI Summary</p>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left">
+          <thead>
+            <tr>
+              <th class="pb-2.5 text-xs font-semibold text-gray-400 pr-3">Step</th>
+              <th class="pb-2.5 text-xs font-semibold text-gray-400 pr-3">Recommendation</th>
+              <th class="pb-2.5 text-xs font-semibold text-gray-400 text-right pr-3">One-time</th>
+              <th class="pb-2.5 text-xs font-semibold text-gray-400 text-right pr-3">Annual Value</th>
+              <th class="pb-2.5 text-xs font-semibold text-gray-400 text-right">Payback</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows}
+            <tr class="border-t-2 border-gray-300">
+              <td class="pt-3 pr-3 text-sm font-bold text-gray-900" colspan="2">Total</td>
+              <td class="pt-3 pr-3 text-sm font-bold text-gray-900 text-right tabular-nums">$${t.one_time_cost ?? '—'}</td>
+              <td class="pt-3 pr-3 text-sm font-bold text-green-700 text-right tabular-nums">${t.annual_value != null ? '$' + t.annual_value + '/yr' : '—'}</td>
+              <td class="pt-3 text-sm font-bold text-gray-700 text-right tabular-nums">${t.payback_weeks != null ? t.payback_weeks + ' wks' : '—'}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      ${s.labor_rate_note ? `<p class="mt-3 text-xs text-gray-400">${esc(s.labor_rate_note)}</p>` : ''}
+    </div>`;
+  }
+
+  // ── Quick wins ─────────────────────────────────────────────────────────────
+  if (s.quick_wins?.length) {
+    const items = s.quick_wins.map(w => `<div class="flex items-start gap-3 py-2.5 border-t border-gray-100 first:border-t-0">
+        <div class="mt-0.5 h-4 w-4 flex-shrink-0 rounded border-2 border-gray-300"></div>
+        <div class="flex-1 min-w-0">
+          <span class="text-sm font-medium text-gray-900">${esc(w.step)}:</span>
+          <span class="text-sm text-gray-600"> ${esc(w.recommendation)}</span>
+        </div>
+        <div class="flex items-center gap-1.5 flex-shrink-0">
+          <span class="text-xs text-gray-400">${w.setup_hours} hr</span>
+          <span class="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">free</span>
+        </div>
+      </div>`).join('');
+    html += `<div class="glass-card rounded-2xl p-6">
+      <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Quick Wins</p>
+      <div>${items}</div>
+    </div>`;
+  }
+
+  // ── Process overview ───────────────────────────────────────────────────────
+  html += `<div class="glass-card rounded-2xl p-6">
+    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Process Overview</p>
+    <p class="text-sm text-gray-700 leading-relaxed">${esc(s.process_overview)}</p>
+    <button onclick="downloadPDF(event)" class="mt-4 inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2 text-sm font-semibold text-gray-700 ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition-all">
+      <svg class="h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+      </svg>
+      Download full report PDF
+    </button>
+  </div>`;
+
+  el.innerHTML = html;
+}
+
 function copyReport() {
-  navigator.clipboard.writeText(state.report).then(() => {
+  navigator.clipboard.writeText(state.pdfReport).then(() => {
     const btn = event.target.closest('button');
     const orig = btn.innerHTML;
     btn.innerHTML = '<svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg> Copied!';
@@ -1334,7 +1469,7 @@ async function downloadPDF(event) {
       body: JSON.stringify({
         diagram_asis: diagramAsIs,
         diagram_improved: diagramImproved,
-        report: state.report,
+        report: state.pdfReport,
         business_type: state.businessType,
         process_name: state.processName,
       })
@@ -1355,7 +1490,7 @@ async function downloadPDF(event) {
 }
 
 function resetApp() {
-  Object.assign(state, { phase:0, businessType:'', weeklyVolume:'', processName:'', channels:'', email:'', laborRate:'', chatHistory:[], transcript:'', extractedSteps:null, statedFailures:[], extractedContext:null, classifiedSteps:null, verdicts:null, report:'' });
+  Object.assign(state, { phase:0, businessType:'', weeklyVolume:'', processName:'', channels:'', email:'', laborRate:'', chatHistory:[], transcript:'', extractedSteps:null, statedFailures:[], extractedContext:null, classifiedSteps:null, verdicts:null, webSummary:null, pdfReport:'' });
   ['business-type','weekly-volume','process-name','channels','labor-rate'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
   const em = document.getElementById('email'); if (em) em.value = '';
   const ca = document.getElementById('chat-area'); if (ca) ca.innerHTML = '';
