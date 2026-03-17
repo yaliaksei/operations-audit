@@ -8,8 +8,16 @@ pain_points:
   - "Pricing is inconsistent across salespeople for the same scope of work"
   - "No structured follow-up — proposals go cold because nobody tracks them"
   - "Scope creep starts at the proposal stage because terms are left vague"
+definition: "Quoting and proposals is the process of responding to a prospective client's interest with a priced, scoped offer — covering needs assessment, pricing calculation, proposal creation, delivery, and follow-up. For service businesses, proposal speed and quality directly determine win rate, and a slow process hands deals to faster-moving competitors."
 process_label: "quoting and proposals"
 cta_text: "Audit your proposal process — free"
+faqs:
+  - q: "How long should it take to send a proposal to a prospective client?"
+    a: "For most service businesses, a proposal should go out within 24–48 hours of the initial conversation. If it's taking 3–5 days, the bottleneck is usually in pricing calculation, approval, or starting from a blank document each time. An audit maps exactly where the time goes."
+  - q: "Why do proposals go cold after being sent?"
+    a: "Proposals go cold because there's no follow-up system. A single send-and-wait is rarely enough. The most common fix is a structured follow-up sequence: a check-in at day 3, a question-based touchpoint at day 7, and a decision-prompt at day 14. An audit reveals whether your process has any follow-up steps at all."
+  - q: "How do I create consistent pricing across my sales team?"
+    a: "Pricing inconsistency usually comes from having no shared pricing library or approval threshold. The fix is a rate card that every salesperson uses as a starting point, with a defined escalation path for custom scope. An audit identifies where your pricing decisions are being made informally."
 related:
   - label: "Invoice & Collections"
     slug: invoice-collections

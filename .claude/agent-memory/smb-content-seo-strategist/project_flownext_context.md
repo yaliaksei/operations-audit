@@ -31,3 +31,7 @@ FlowNext is a free Flask web app ("AI operations advisor") that interviews SMB o
 - for.html: CTA H2 changed from "Ready to fix your X?" to "You already know something's wrong. Now find out exactly what."
 - for.html: related section label changed from "Also worth auditing" to "Once you've fixed this one, these are next"
 - contact.html: added meta title and description, rewrote H1 to "We read every message", rewrote intro paragraph, fixed "AI AI" footer typo, improved form placeholders
+
+**AEO audit completed (2026-03-16):**
+- Full AEO analysis delivered covering: schema gaps (SoftwareApplication, HowTo, BreadcrumbList, Organization), content extractability, missing entity signals, FAQ expansion, definition-layer content, and natural-language query alignment
+- Priority recommendations: add SoftwareApplication schema to landing.html, add HowTo schema to landing.html How It Works section, add FAQ schema to for.html pages, add BreadcrumbList to for.html pages, add an "About FlowNext" definitional paragraph to landing.html above the fold

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FlowNext — Free AI Operations Advisor for Small Business</title>
-<meta name="description" content="Get a free AI-powered audit of any business process in under 10 minutes. Find bottlenecks, get ROI estimates, and download a PDF action plan. No signup, no consultant.">
+<meta name="description" content="Get a free AI-powered audit of any business process in 10 minutes. Find bottlenecks, get ROI estimates, and download a PDF report. No signup.">
 <link rel="icon" type="image/png" href="/static/assets/icon.png">
 <link rel="canonical" href="{{ base_url }}/">
 <meta property="og:type" content="website">
@@ -13,6 +13,8 @@
 <meta property="og:description" content="Audit any workflow in 10 minutes. Get step-by-step verdicts, ROI estimates, flow diagrams, and a downloadable PDF report — free, no signup.">
 <meta property="og:image" content="{{ base_url }}/static/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FlowNext — Free AI Operations Advisor for Small Business">
+<meta name="twitter:description" content="Audit any workflow in 10 minutes. Get step-by-step verdicts, ROI estimates, flow diagrams, and a downloadable PDF report — free, no signup.">
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -75,8 +77,92 @@
         "@type": "Answer",
         "text": "Yes. Each audit is a fresh session. Run as many as you like — one for invoicing, one for onboarding, one for hiring. Each produces its own separate report."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does a workflow audit take?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The full audit — from context-setting through to a downloadable PDF report — takes 5–10 minutes. The AI interview is the longest part, and you can move at your own pace."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a workflow audit?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A workflow audit is a structured review of a repeating business process — like invoicing, client onboarding, or job scheduling. It identifies bottlenecks, failure points, and manual steps that could be automated or improved, and estimates the time and money saved by fixing each one. FlowNext automates this analysis using AI."
+      }
     }
   ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "FlowNext",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "FlowNext is a free AI-powered workflow audit tool for small business owners. Describe any business process and get step-by-step improvement verdicts, ROI estimates, flow diagrams, and a downloadable PDF report — in under 10 minutes.",
+  "url": "{{ base_url }}/app",
+  "featureList": [
+    "AI interview of business process",
+    "Step-by-step keep/improve/replace/automate verdicts",
+    "ROI and payback period estimates",
+    "As-is and improved flow diagrams",
+    "Downloadable PDF report"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to audit a business process with FlowNext",
+  "description": "Get an AI-powered audit of any small business workflow in four steps — no prep required.",
+  "totalTime": "PT10M",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Set the context",
+      "text": "Tell FlowNext your business type, how often the process runs, and what tools are involved. Takes 60 seconds."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Walk through the process",
+      "text": "An AI interviewer asks focused questions to draw out what actually happens — including informal steps and workarounds — or paste an existing transcript."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "AI runs the analysis",
+      "text": "Your workflow is mapped step by step. Every bottleneck and failure point is flagged, and the time and money saved by fixing each one is calculated."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Get your report",
+      "text": "Review your flow diagrams, read the assessment, and download a PDF with a clear action plan showing what to fix first and why."
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "FlowNext",
+  "url": "{{ base_url }}/",
+  "description": "FlowNext builds free AI tools to help small business owners identify and fix broken workflows.",
+  "foundingDate": "2025"
 }
 </script>
 {% if gtm_id %}
@@ -150,7 +236,8 @@
   <section class="py-16 bg-white">
     <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-center text-2xl font-bold text-gray-900 mb-2">A real action plan, not a vague report</h2>
-      <p class="text-center text-sm text-gray-500 mb-14">Every audit produces four things. Together they tell you what's broken, what it's costing you, and what to do about it — in plain language.</p>
+      <p class="text-center text-sm text-gray-500 mb-6">Every audit produces four things. Together they tell you what's broken, what it's costing you, and what to do about it — in plain language.</p>
+      <p class="text-center text-sm text-gray-600 bg-amber-50 border border-amber-100 rounded-lg px-5 py-3 mb-14 max-w-2xl mx-auto leading-relaxed"><strong class="font-semibold text-gray-800">FlowNext is a free AI workflow audit tool for small business owners.</strong> Describe any repeating process — invoicing, hiring, client onboarding, job scheduling — and FlowNext maps the steps, flags bottlenecks, calculates the ROI of fixing each problem, and packages everything into a PDF you can act on immediately. No signup required.</p>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
 
         <div class="flex gap-5">
@@ -235,7 +322,7 @@
   <!-- How it works -->
   <section class="py-16 bg-white">
     <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
-      <h2 class="text-center text-2xl font-bold text-gray-900 mb-2">How it works: four steps, then you have a plan</h2>
+      <h2 class="text-center text-2xl font-bold text-gray-900 mb-2">How a small business workflow audit works — in four steps</h2>
       <p class="text-center text-base text-gray-500 mb-14">No prep needed. Just describe what actually happens — the informal workarounds and all.</p>
 
       <div class="space-y-6">
@@ -280,7 +367,7 @@
   <section class="py-16 bg-gray-50 border-y border-gray-100">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-center text-2xl font-bold text-gray-900 mb-2">Any process that repeats is worth auditing</h2>
-      <p class="text-center text-base text-gray-500 mb-10">Pick the one that's been quietly costing you the most. Each audit is independent — run as many as you need.</p>
+      <p class="text-center text-base text-gray-500 mb-10">Every small business has at least one broken process it's been tolerating for months. Pick the one that costs you the most time — invoicing delays, slow onboarding, inconsistent scheduling — and start there.</p>
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         {% for label, slug in [
           ('Client onboarding',    'client-onboarding'),
@@ -355,6 +442,26 @@
           </summary>
           <div class="px-5 pb-4 text-base text-gray-500 leading-relaxed">
             Yes. Each audit is a fresh session. Run as many as you like — one for invoicing, one for onboarding, one for hiring. Each produces its own separate report.
+          </div>
+        </details>
+
+        <details class="group bg-white">
+          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-base font-medium text-gray-900 hover:bg-amber-50 transition-colors">
+            How long does a workflow audit take?
+            <svg class="faq-chevron h-4 w-4 text-gray-400 flex-shrink-0 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+          </summary>
+          <div class="px-5 pb-4 text-base text-gray-500 leading-relaxed">
+            The full audit — from context-setting through to a downloadable PDF report — takes 5–10 minutes. The AI interview is the longest part, and you can move at your own pace.
+          </div>
+        </details>
+
+        <details class="group bg-white">
+          <summary class="flex items-center justify-between gap-4 px-5 py-4 text-base font-medium text-gray-900 hover:bg-amber-50 transition-colors">
+            What is a workflow audit?
+            <svg class="faq-chevron h-4 w-4 text-gray-400 flex-shrink-0 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" /></svg>
+          </summary>
+          <div class="px-5 pb-4 text-base text-gray-500 leading-relaxed">
+            A workflow audit is a structured review of a repeating business process — like invoicing, client onboarding, or job scheduling. It identifies bottlenecks, failure points, and manual steps that could be automated or improved, and estimates the time and money saved by fixing each one. FlowNext automates this analysis using AI.
           </div>
         </details>
 

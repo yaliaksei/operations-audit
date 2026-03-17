@@ -8,8 +8,16 @@ pain_points:
   - "Vendor comparison is informal, so the cheapest option often wins by default"
   - "Approval for new suppliers takes weeks because the path isn't defined"
   - "Pricing agreements live in email threads, not a centralized document"
+definition: "Supplier sourcing is the process of identifying, evaluating, and onboarding new vendors for goods or services — covering requirements definition, vendor outreach, RFQ creation, bid comparison, approval, and supplier onboarding. For small businesses that rely on external suppliers, a broken sourcing process creates unpredictable costs, quality variability, and operational delays."
 process_label: "supplier sourcing"
 cta_text: "Audit your sourcing process — free"
+faqs:
+  - q: "How do I evaluate suppliers consistently without a procurement team?"
+    a: "The key is a standard evaluation rubric applied to every vendor: price, lead time, quality track record, minimum order quantities, and payment terms. Without a rubric, the cheapest option wins by default — which often costs more in quality issues and delays downstream. An audit identifies whether your current sourcing has any structured comparison step."
+  - q: "Why does approving a new supplier take so long in a small business?"
+    a: "Slow supplier approval usually means there's no defined approval path. Requests go to whoever seems responsible, wait for a response, and bounce between people before a decision is made. The fix is a simple escalation path with a named decision-maker and a maximum response time. An audit maps your current approval flow and where it stalls."
+  - q: "How do I reduce dependence on a single supplier without disrupting operations?"
+    a: "Start by auditing which suppliers are single-source — items or services where you have no backup vendor. Prioritize the ones where a supply disruption would stop a job or delay a client. Then run a parallel sourcing process for those items specifically. An audit of your sourcing process identifies your single-source risks and which are highest priority to address."
 related:
   - label: "Inventory Ordering"
     slug: inventory-ordering

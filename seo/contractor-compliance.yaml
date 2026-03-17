@@ -8,8 +8,16 @@ pain_points:
   - "W-9 collection is a manual email chain that takes weeks per contractor"
   - "Compliance status lives in a spreadsheet that's always slightly out of date"
   - "Audit preparation is a scramble because documents aren't centralized"
+definition: "Contractor compliance is the process of verifying and maintaining the documentation required to legally engage independent contractors — covering W-9 collection, insurance certificate verification, license checks, and ongoing expiration tracking. For businesses using 5 or more contractors, compliance lapses create significant liability exposure."
 process_label: "contractor compliance"
 cta_text: "Audit your compliance process — free"
+faqs:
+  - q: "What documents does a small business need to collect from contractors?"
+    a: "At minimum: a signed W-9 for tax reporting, a certificate of insurance (COI) naming your business as an additional insured, and any required trade licenses or certifications for the work being performed. Some industries and states require additional documentation. An audit identifies exactly what your process is missing."
+  - q: "How do I track contractor insurance expiration dates without a dedicated HR team?"
+    a: "Most small businesses track this in a spreadsheet — which works until someone forgets to check it. The fix is a defined process with calendar-based expiration alerts and a clear owner responsible for follow-up. An audit reveals whether your current process has a monitoring step at all."
+  - q: "What happens if a contractor is on-site with an expired insurance certificate?"
+    a: "If an incident occurs while a contractor is on-site with a lapsed certificate, your business may be held liable for damages that their insurance would otherwise have covered. Beyond financial risk, it can also trigger compliance issues during audits or when bidding on contracts that require proof of vendor compliance."
 related:
   - label: "Job Scheduling"
     slug: job-scheduling

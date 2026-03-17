@@ -8,8 +8,16 @@ pain_points:
   - "Over-ordering happens because nobody trusts the count in the system"
   - "Reorder points are either not set or based on guesses from two years ago"
   - "Vendor lead times aren't tracked, so orders go out too late"
+definition: "Inventory ordering is the process of monitoring stock levels, determining when to reorder, placing purchase orders with suppliers, and receiving goods into usable inventory — covering reorder point monitoring, vendor selection, PO creation, delivery tracking, and stock reconciliation. For product-based or field service businesses, this process directly determines whether jobs can start on time."
 process_label: "inventory ordering"
 cta_text: "Audit your ordering process — free"
+faqs:
+  - q: "How do I prevent stockouts without tying up cash in excess inventory?"
+    a: "The core fix is setting accurate reorder points based on actual lead times and usage rates — not guesses. Most small businesses either have no reorder points set, or set them once and never updated them. An audit identifies which items are most at risk and what the correct reorder levels should be."
+  - q: "Why does over-ordering happen even when we have an inventory system?"
+    a: "Over-ordering usually happens because the team doesn't trust the system counts — so they order extra as a buffer. This is a data quality problem, not a behavior problem. An audit traces where your inventory counts go wrong: receiving errors, no scan-out process, or counts that are only reconciled monthly."
+  - q: "What's the first thing to fix in a broken inventory ordering process?"
+    a: "Lead time visibility. Most ordering problems — stockouts and over-ordering alike — stem from not knowing how long each supplier takes to deliver. Once lead times are tracked accurately, reorder points become reliable and emergency orders drop significantly."
 related:
   - label: "Supplier Sourcing"
     slug: supplier-sourcing

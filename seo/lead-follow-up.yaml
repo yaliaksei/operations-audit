@@ -8,8 +8,16 @@ pain_points:
   - "Response time varies wildly depending on who's covering that day"
   - "No tracking means nobody knows which leads are still warm and which have gone cold"
   - "Follow-up falls through the cracks after a handoff from marketing to sales"
+definition: "Lead follow-up is the process of re-engaging prospective clients after initial contact to move them toward a decision — covering follow-up sequencing, timing, channel selection, tracking, and hand-off from marketing to sales. For small businesses, most leads that don't convert are lost not because of price or fit, but because follow-up was inconsistent or stopped too soon."
 process_label: "lead follow-up"
 cta_text: "Audit your follow-up process — free"
+faqs:
+  - q: "How many follow-up attempts should a small business make before giving up on a lead?"
+    a: "Research consistently shows that most conversions happen after the 5th to 8th contact, but most small businesses stop after 1–2. A structured follow-up sequence of 6–8 touchpoints over 3–4 weeks — varying channel and message — captures the majority of convertible leads. An audit reveals where your current sequence stops."
+  - q: "How do I follow up with leads without coming across as pushy?"
+    a: "The key is value-first follow-up — each touchpoint should offer something useful rather than just asking for a decision. A question, a relevant resource, or an answer to a common objection keeps you top of mind without pressure. An audit of your follow-up process identifies whether your current messages are value-based or purely sales-driven."
+  - q: "Why do leads go cold after a handoff from marketing to sales?"
+    a: "Handoff drop-off usually happens because there's no defined SLA for how quickly sales must contact a new lead, and no confirmation step to ensure the handoff was received. Leads that wait more than 24 hours for first contact convert at dramatically lower rates. An audit identifies whether your handoff has a timing standard and a confirmation loop."
 related:
   - label: "Quote & Proposal"
     slug: quote-proposal

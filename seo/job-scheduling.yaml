@@ -8,8 +8,16 @@ pain_points:
   - "Staff find out about schedule changes via text message — sometimes too late"
   - "No-shows eat revenue because there's no confirmation or reminder system"
   - "Rescheduling a job takes 15 minutes of back-and-forth that didn't need to happen"
+definition: "Job scheduling is the process of assigning work orders, crews, or appointments to available staff and resources — covering availability checks, assignment, confirmation, dispatch, and schedule changes. For field service businesses, it runs daily and a single scheduling failure can cascade into hours of lost productivity and client complaints."
 process_label: "job scheduling"
 cta_text: "Audit your scheduling process — free"
+faqs:
+  - q: "How do I stop double-bookings in my field service business?"
+    a: "Double-bookings happen when availability lives in someone's head or an unshared calendar. The fix is a single source of truth for all jobs — one system that every dispatcher and crew member can see and update in real time. An audit identifies exactly where the scheduling information is breaking down."
+  - q: "Why do my crews show up to the wrong location or at the wrong time?"
+    a: "This is almost always a communication breakdown in the dispatch step. Either schedule changes aren't being communicated to the right person, or the confirmation step is manual and inconsistent. A process audit maps where the information handoff is failing."
+  - q: "What's a realistic fix for a chaotic job scheduling process?"
+    a: "Most scheduling chaos in small businesses comes from 2–3 fixable steps: unclear ownership of the master schedule, no confirmation system for clients, and ad-hoc reschedule handling. Fixing these doesn't require expensive software — it requires a defined process applied consistently."
 related:
   - label: "Contractor Compliance"
     slug: contractor-compliance
