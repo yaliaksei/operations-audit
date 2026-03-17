@@ -1,5 +1,7 @@
+import base64
 import re
 from html import escape as esc
+from pathlib import Path
 
 
 def render_report_html(text: str) -> str:
@@ -207,12 +209,21 @@ PDF_CSS = """
     height: 264mm;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     text-align: center;
   }
+  .cover-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
   h1 { font-size: 22pt; color: #1e1b4b; margin: 0 0 8pt; }
   .meta { color: #6b7280; font-size: 11pt; margin: 0; }
+  .cover-brand { padding-bottom: 4pt; text-align: center; }
+  .cover-brand img { height: 28pt; display: block; margin: 0 auto 5pt; }
+  .cover-brand p { font-size: 8.5pt; color: #9ca3af; margin: 0; }
   .diagram-page { page: diagram; break-inside: avoid; }
   .diagram-page h2 { font-size: 12pt; color: #4338ca; margin: 0 0 6pt;
                      border-bottom: 1px solid #e0e7ff; padding-bottom: 3pt;
@@ -305,11 +316,21 @@ def build_pdf(
     meta = business_type + (' · ' + process_name if process_name else '')
     no_diagram = '<p style="color:#9ca3af">No diagram available.</p>'
 
+    logo_path = Path(__file__).parent.parent / "static" / "assets" / "logo.png"
+    logo_data = base64.b64encode(logo_path.read_bytes()).decode() if logo_path.exists() else ""
+    logo_src = f"data:image/png;base64,{logo_data}" if logo_data else ""
+
     html = f"""<!DOCTYPE html>
 <html><head><meta charset="UTF-8"><style>{PDF_CSS}</style></head><body>
   <div class="cover">
-    <h1>Operational Assessment</h1>
-    <div class="meta">{meta}</div>
+    <div class="cover-main">
+      <h1>Operational Assessment</h1>
+      <div class="meta">{meta}</div>
+    </div>
+    <div class="cover-brand">
+      {'<img src="' + logo_src + '" alt="FlowNext">' if logo_src else ''}
+      <p>Prepared by <a href="https://flownext.co" style="color:#9ca3af">flownext.co</a></p>
+    </div>
   </div>
 
   <div class="diagram-page">
